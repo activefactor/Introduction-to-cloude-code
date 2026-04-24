@@ -2,7 +2,7 @@
 
 Chat AIを使い慣れた人が、ClaudeCodeを体験しながら学べるオンボーディングサイトです。
 
-🌐 **公開URL**: https://activefactor.github.io/Introduction-to-cloude-code/
+[![サイトを見る](https://img.shields.io/badge/🌐%20サイトを見る-公開中-2e74e8?style=for-the-badge)](https://activefactor.github.io/Introduction-to-cloude-code/)
 
 ---
 
