@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>セッション・記憶・ルール・スキル — ClaudeCode入門</title>
+  <meta name="description" content="ClaudeCodeのセッション・短期記憶・長期記憶・ルール・スキルの考え方をやさしく解説。継続利用で便利になる仕組みを学びましょう。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .concept-card {
+      background: #fff;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--color-border);
+      overflow: hidden;
+      margin-bottom: var(--space-8);
+    }
+    .concept-card__header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-5) var(--space-6);
+      background: var(--color-comparison-claude);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .concept-card__icon { font-size: 2rem; }
+    .concept-card__header h2 { font-size: var(--text-2xl); margin: 0; }
+    .concept-card__body { padding: var(--space-6); }
+    .concept-card__oneliner {
+      font-size: var(--text-lg);
+      font-weight: 700;
+      background: var(--color-primary-light);
+      border-left: 4px solid var(--color-primary);
+      padding: var(--space-3) var(--space-5);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin-bottom: var(--space-5);
+    }
+    .example-box {
+      background: var(--color-bg-section);
+      border-radius: var(--radius-md);
+      padding: var(--space-4) var(--space-5);
+      margin-top: var(--space-4);
+    }
+    .example-box h4 {
+      font-size: var(--text-sm);
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: var(--space-2);
+    }
+    .example-box p {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      margin: 0;
+    }
+
+    .memory-diagram {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-5);
+      margin: var(--space-5) 0;
+    }
+    .memory-box {
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      border: 2px solid;
+    }
+    .memory-box--short {
+      border-color: var(--color-warning);
+      background: var(--color-caution-bg);
+    }
+    .memory-box--long {
+      border-color: var(--color-primary);
+      background: var(--color-primary-light);
+    }
+    .memory-box h4 {
+      font-size: var(--text-base);
+      margin-bottom: var(--space-2);
+    }
+    .memory-box ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+    }
+    .memory-box li { padding-left: var(--space-3); position: relative; }
+    .memory-box li::before { content: "•"; position: absolute; left: 0; }
+    @media (max-width: 640px) {
+      .memory-diagram { grid-template-columns: 1fr; }
+    }
+
+    .skill-examples {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-4);
+      margin-top: var(--space-5);
+    }
+    .skill-example {
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      border: 1px solid var(--color-border);
+    }
+    .skill-example h4 {
+      font-size: var(--text-base);
+      margin-bottom: var(--space-2);
+    }
+    .skill-example p {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      margin: 0;
+    }
+    @media (max-width: 640px) {
+      .skill-examples { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-logo">Claude<span>Code</span>入門</a>
+    <nav class="site-nav" aria-label="メインナビゲーション">
+      <a href="experience.html">まず体験</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">知る <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="what-is-claudecode.html">ClaudeCodeとは</a>
+          <a href="vs-chat-ai.html">Chat AIとの違い</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">使いこなす <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="getting-started.html">導入方法を選ぶ</a>
+          <a href="first-steps.html">はじめての使い方</a>
+          <a href="use-cases.html">便利な活用事例</a>
+          <a href="session-memory.html">セッション・記憶・ルール</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">料金・安全 <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="pricing.html">料金とトークン</a>
+          <a href="models.html">モデルの使い分け</a>
+          <a href="security.html">セキュリティ・オプトアウト</a>
+        </div>
+      </div>
+      <a href="faq.html">FAQ</a>
+    </nav>
+    <div class="header-cta">
+      <a href="experience.html" class="btn btn--primary">まず体験してみる</a>
+    </div>
+    <button class="hamburger" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container--narrow">
+    <p class="section-label">しくみを知る</p>
+    <h1>セッション・記憶・ルール・スキル</h1>
+    <p class="section-lead" style="margin-bottom:0;">
+      ClaudeCodeを使いこなすうえで知っておきたい4つの概念を、<br>
+      たとえと具体例を使ってやさしく説明します。
+    </p>
+    <div class="page-summary">
+      <h3>このページで分かること</h3>
+      <ul>
+        <li>セッションとは何か</li>
+        <li>短期記憶と長期記憶の違い</li>
+        <li>ルールを書くと何が変わるか</li>
+        <li>スキルとは何か、どう便利か</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section section--white">
+  <div class="container--narrow">
+    <div class="callout callout--info">
+      <strong>3行まとめ</strong>
+      <p>セッションは「作業のひとつながり」、記憶は「会話内（短期）」と「設定ファイル（長期）」の2種類があります。<br>
+      ルールを書くと、毎回同じ指示をしなくてもClaudeCodeが一貫した動きをしてくれます。<br>
+      スキルはよく使う作業を「コマンド一発」で呼び出せる仕組みです。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--light">
+  <div class="container--narrow">
+    <p class="section-label">4つの概念</p>
+    <h2 class="section-title">ClaudeCodeの使い心地を左右する4つの考え方</h2>
+    <p style="margin-bottom:var(--space-8);">これらを知っておくと、ClaudeCodeをより快適に使いこなせます。最初は「こういうものがある」程度で大丈夫です。</p>
+
+    <!-- セッション -->
+    <div class="concept-card">
+      <div class="concept-card__header">
+        <span class="concept-card__icon" aria-hidden="true">🔄</span>
+        <h2>セッション</h2>
+      </div>
+      <div class="concept-card__body">
+        <div class="concept-card__oneliner">一言で言うと：「ClaudeCodeとの1回の作業時間」</div>
+        <p>セッションとは、ClaudeCodeを起動して作業を始め、終了するまでのひとつながりのやり取りのことです。</p>
+        <p>たとえるなら、<strong>会議室を予約して入り、仕事をして退室するまでの時間</strong>のようなイメージです。</p>
+        <div class="example-box">
+          <h4>具体的なイメージ</h4>
+          <p>月曜日にREADMEを作る作業 → これが1つのセッション。<br>
+          火曜日に続きを始める → 新しいセッション。前日の会話は引き継がれないが、ファイルは残っている。</p>
+        </div>
+        <p style="margin-top:var(--space-4);">長い作業をする場合は、1つのセッション内でまとめて進めるのが効率的です。</p>
+      </div>
+    </div>
+
+    <!-- 短期・長期記憶 -->
+    <div class="concept-card">
+      <div class="concept-card__header">
+        <span class="concept-card__icon" aria-hidden="true">🧠</span>
+        <h2>短期記憶と長期記憶</h2>
+      </div>
+      <div class="concept-card__body">
+        <div class="concept-card__oneliner">一言で言うと：「今の会話で覚えること」と「ずっと持続する設定」</div>
+
+        <div class="memory-diagram">
+          <div class="memory-box memory-box--short">
+            <h4>⏱️ 短期記憶（コンテキスト）</h4>
+            <ul>
+              <li>今のセッション内のやり取り</li>
+              <li>セッションが終わるとリセット</li>
+              <li>長くなると古い内容から消えていく</li>
+            </ul>
+          </div>
+          <div class="memory-box memory-box--long">
+            <h4>💾 長期記憶（メモリ・設定）</h4>
+            <ul>
+              <li>CLAUDE.mdなどに書いた設定</li>
+              <li>セッションを超えて持続する</li>
+              <li>ルールや好みの動作を保存できる</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="example-box">
+          <h4>たとえると</h4>
+          <p>短期記憶は「その日のメモ帳」。長期記憶は「ノートに書いた大事なこと」。<br>
+          メモ帳は毎日新しくなるが、ノートの内容はいつでも参照できます。</p>
+        </div>
+
+        <div class="callout callout--tip" style="margin-top:var(--space-5);">
+          <strong>実際に便利になる例</strong>
+          <p>「いつも日本語で返して」「コードのコメントは英語で」などの設定を長期記憶（設定ファイル）に書いておくと、毎回言わなくてもその通りに動いてくれます。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ルール -->
+    <div class="concept-card">
+      <div class="concept-card__header">
+        <span class="concept-card__icon" aria-hidden="true">📋</span>
+        <h2>ルール</h2>
+      </div>
+      <div class="concept-card__body">
+        <div class="concept-card__oneliner">一言で言うと：「毎回言わなくても守ってほしいこと」</div>
+        <p>ルールとは、ClaudeCodeに「こういう動き方をしてほしい」という設定を事前に書いておく仕組みです。</p>
+        <p>たとえるなら、<strong>新しいアシスタントに渡すマニュアル</strong>のようなものです。「日本語で返してね」「コードは必ずコメント付きで」など、毎回言わなくても守ってもらえます。</p>
+        <div class="example-box">
+          <h4>ルールに書ける内容の例</h4>
+          <p>・返答は常に日本語でお願いします<br>
+          ・コードを書くときは必ずコメントを付けてください<br>
+          ・一度に大きな変更をせず、確認しながら進めてください<br>
+          ・このプロジェクトはXという目的で作られています</p>
+        </div>
+        <div class="callout callout--tip" style="margin-top:var(--space-5);">
+          <strong>CLAUDE.mdというファイルに書くのが基本</strong>
+          <p>プロジェクトのフォルダに <code style="background:var(--color-primary-light); padding:2px 6px; border-radius:4px; font-size:var(--text-sm);">CLAUDE.md</code> という名前のファイルを置いて、そこにルールを書きます。ClaudeCodeが自動的に読み込みます。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- スキル -->
+    <div class="concept-card">
+      <div class="concept-card__header">
+        <span class="concept-card__icon" aria-hidden="true">⚡</span>
+        <h2>スキル</h2>
+      </div>
+      <div class="concept-card__body">
+        <div class="concept-card__oneliner">一言で言うと：「よく使う作業をコマンド一発で呼び出せる仕組み」</div>
+        <p>スキルとは、繰り返し使う作業の手順をあらかじめ定義しておき、短い呼び出しコマンドで実行できるようにしたものです。</p>
+        <p>たとえるなら、<strong>よく使うレシピを名前付きで保存しておく</strong>イメージです。「鍋焼きうどん、お願い」と言うだけで毎回全手順を説明しなくて済みます。</p>
+        <div class="skill-examples">
+          <div class="skill-example">
+            <h4>💡 スキルの使い方例</h4>
+            <p>「/review」と打つだけでコードレビューの一連の確認が始まる。毎回「○○の観点でレビューして」と説明しなくていい。</p>
+          </div>
+          <div class="skill-example">
+            <h4>🔄 繰り返し作業に効く</h4>
+            <p>「毎週ログを整理してレポートを作る」といった定型作業をスキルにしておくと、ワンコマンドで実行できます。</p>
+          </div>
+        </div>
+        <div class="callout callout--info" style="margin-top:var(--space-5);">
+          <strong>スキルは最初から使わなくて大丈夫</strong>
+          <p>慣れてきたら、よく使う作業をスキルにまとめると便利です。最初は普通に会話で依頼するところから始めましょう。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--white">
+  <div class="container--narrow">
+    <p class="section-label">使いこなすヒント</p>
+    <h2 class="section-title">具体的にどう便利になるの？</h2>
+    <p style="margin-bottom:var(--space-6);">4つの概念を活用すると、ClaudeCodeの使い心地が大きく変わります。</p>
+
+    <div class="step-flow">
+      <div class="step-item">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3>まず、セッションを意識して作業をまとめる</h3>
+          <p>関連する作業はひとつのセッションで進めると、会話の文脈が活きて効率的です。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3>次に、よく使う指示をルールに書く</h3>
+          <p>「毎回同じことを言っている」と気づいたら、それをCLAUDE.mdに書いてみましょう。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3>慣れてきたら、スキルで定型作業を自動化する</h3>
+          <p>よく使う手順をスキルにまとめると、ワンコマンドで呼び出せるようになります。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--light">
+  <div class="container--narrow">
+    <div class="next-page-nav">
+      <h3>次は安全に使う方法を知ろう</h3>
+      <div class="next-page-cards">
+        <a href="security.html" class="next-page-card">
+          <span class="label">おすすめの次のページ</span>
+          <span class="title">セキュリティ・オプトアウト</span>
+          <span class="desc">安心して使うための考え方を説明します。</span>
+        </a>
+        <a href="glossary.html" class="next-page-card">
+          <span class="label">用語をまとめて確認</span>
+          <span class="title">用語集</span>
+          <span class="desc">このページの用語を含め、主要語をまとめています。</span>
+        </a>
+        <a href="faq.html" class="next-page-card">
+          <span class="label">疑問を解消</span>
+          <span class="title">FAQ</span>
+          <span class="desc">よくある疑問への回答をまとめています。</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="site-logo">Claude<span style="color:#7ec8e3;">Code</span>入門</a>
+        <p>ClaudeCode初心者向けオンボーディングサイト。</p>
+      </div>
+      <div class="footer-nav">
+        <h4>体験・基本</h4>
+        <ul>
+          <li><a href="experience.html">まず体験してみる</a></li>
+          <li><a href="what-is-claudecode.html">ClaudeCodeとは</a></li>
+          <li><a href="vs-chat-ai.html">Chat AIとの違い</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <h4>使い方・活用</h4>
+        <ul>
+          <li><a href="getting-started.html">導入方法を選ぶ</a></li>
+          <li><a href="first-steps.html">はじめての使い方</a></li>
+          <li><a href="use-cases.html">便利な活用事例</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <h4>知識・安全</h4>
+        <ul>
+          <li><a href="pricing.html">料金とトークン</a></li>
+          <li><a href="security.html">セキュリティ</a></li>
+          <li><a href="glossary.html">用語集</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>ClaudeCode入門 — 初心者向けオンボーディングサイト</span>
+      <span>※ 掲載内容は参考情報です。最新の仕様は公式サイトをご確認ください。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

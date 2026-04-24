@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat AIとの違い — ClaudeCode入門</title>
+  <meta name="description" content="Chat AIとClaudeCodeの違いを比較表でわかりやすく解説。ファイルを扱えることの価値と、どんな作業で差が出るかを具体的に説明します。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .who-benefits {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-5);
+    }
+    .who-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      border: 1px solid var(--color-border);
+    }
+    .who-card h4 {
+      font-size: var(--text-base);
+      margin-bottom: var(--space-3);
+    }
+    .who-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+    .who-card li {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      padding-left: var(--space-5);
+      position: relative;
+    }
+    .who-card li::before {
+      position: absolute;
+      left: 0;
+    }
+    .who-card--fit li::before { content: "✅"; }
+    .who-card--maybe li::before { content: "△"; }
+    @media (max-width: 640px) {
+      .who-benefits { grid-template-columns: 1fr; }
+    }
+
+    .diff-example {
+      background: #fff;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--color-border);
+      overflow: hidden;
+      margin: var(--space-6) 0;
+    }
+    .diff-example__title {
+      background: var(--color-comparison-claude);
+      padding: var(--space-4) var(--space-6);
+      font-weight: 700;
+      font-size: var(--text-base);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .diff-example__body {
+      padding: var(--space-6);
+    }
+    .diff-example__scene {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      background: var(--color-bg-section);
+      border-radius: var(--radius-md);
+      padding: var(--space-3) var(--space-5);
+      margin-bottom: var(--space-5);
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-logo">Claude<span>Code</span>入門</a>
+    <nav class="site-nav" aria-label="メインナビゲーション">
+      <a href="experience.html">まず体験</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">知る <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="what-is-claudecode.html">ClaudeCodeとは</a>
+          <a href="vs-chat-ai.html">Chat AIとの違い</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">使いこなす <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="getting-started.html">導入方法を選ぶ</a>
+          <a href="first-steps.html">はじめての使い方</a>
+          <a href="use-cases.html">便利な活用事例</a>
+          <a href="session-memory.html">セッション・記憶・ルール</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">料金・安全 <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="pricing.html">料金とトークン</a>
+          <a href="models.html">モデルの使い分け</a>
+          <a href="security.html">セキュリティ・オプトアウト</a>
+        </div>
+      </div>
+      <a href="faq.html">FAQ</a>
+    </nav>
+    <div class="header-cta">
+      <a href="experience.html" class="btn btn--primary">まず体験してみる</a>
+    </div>
+    <button class="hamburger" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="container--narrow">
+    <p class="section-label">Step 2 — 違いを理解する</p>
+    <h1>Chat AIとの違い</h1>
+    <p class="section-lead" style="margin-bottom:0;">
+      普段使っているChat AIと、ClaudeCodeはどこが違うのか。<br>
+      比較しながら、差が出やすい場面を具体的に見ていきます。
+    </p>
+    <div class="page-summary">
+      <h3>このページで分かること</h3>
+      <ul>
+        <li>Chat AIとClaudeCodeの根本的な違い</li>
+        <li>「ファイルを扱える」ことがなぜ価値なのか</li>
+        <li>どんな作業で差が出やすいか</li>
+        <li>どんな人にこの違いが効くか</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ざっくり比較 -->
+<section class="section section--white">
+  <div class="container--narrow">
+    <div class="callout callout--info">
+      <strong>3行まとめ</strong>
+      <p>Chat AIは「会話で答えを返す」ツール。ClaudeCodeは「会話しながら実作業も進める」ツールです。<br>
+      一番大きな違いは、実際のファイルを読んだり、作ったり、直したりできること。<br>
+      この違いは、ファイルを扱う作業が増えるほど効いてきます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 比較表 -->
+<section class="section section--light">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">比較で分かる</p>
+      <h2 class="section-title">Chat AIとClaudeCodeの違いをざっくり見る</h2>
+    </div>
+    <div style="overflow-x: auto;">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>比較軸</th>
+            <th>Chat AI（従来）</th>
+            <th class="col-claude">ClaudeCode</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>できること</td>
+            <td>質問への回答、文章生成、情報整理</td>
+            <td>上記に加えて、ファイルの作成・編集・操作</td>
+          </tr>
+          <tr>
+            <td>実ファイルとの関わり</td>
+            <td>ファイルは直接扱えない。コピペが必要</td>
+            <td>ファイルを読んで、作って、直せる</td>
+          </tr>
+          <tr>
+            <td>作業の進み方</td>
+            <td>返答を見て、自分で作業に落とす</td>
+            <td>会話の流れで、作業まで自動で進む</td>
+          </tr>
+          <tr>
+            <td>継続作業への向き</td>
+            <td>毎回ゼロからスタート</td>
+            <td>ファイルやフォルダの状態を見ながら続けられる</td>
+          </tr>
+          <tr>
+            <td>再現性</td>
+            <td>結果は会話次第でばらつく</td>
+            <td>ルールやメモリを設定すると一貫性が上がる</td>
+          </tr>
+          <tr>
+            <td>開発・制作作業との相性</td>
+            <td>アイデア出しや下書きには強い</td>
+            <td>実際のファイルを扱う作業にも強い</td>
+          </tr>
+          <tr>
+            <td>コーディング経験</td>
+            <td>不問。誰でも使いやすい</td>
+            <td>不問だが、ファイル構造への慣れがあると活かしやすい</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 一番大きな違い -->
+<section class="section section--white">
+  <div class="container--narrow">
+    <p class="section-label">核心の違い</p>
+    <h2 class="section-title">一番大きな違いは「実際のファイルを扱えること」</h2>
+    <p>Chat AIとClaudeCodeの本質的な違いは、ここに集約されます。</p>
+
+    <div class="diff-example">
+      <div class="diff-example__title">💬 Chat AIの場合</div>
+      <div class="diff-example__body">
+        <div class="diff-example__scene">場面：「このテキストをREADMEにしたい」</div>
+        <ol style="padding-left:var(--space-5); display:flex; flex-direction:column; gap:var(--space-2); font-size:var(--text-sm); color:var(--color-text-muted);">
+          <li>内容を伝える</li>
+          <li>「こんなREADMEはどうですか？」と文章案が返ってくる</li>
+          <li>自分でコピーする</li>
+          <li>新しいファイルを作る</li>
+          <li>貼り付けて、整える</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="diff-example">
+      <div class="diff-example__title">✨ ClaudeCodeの場合</div>
+      <div class="diff-example__body">
+        <div class="diff-example__scene">場面：「このテキストをREADMEにしたい」</div>
+        <ol style="padding-left:var(--space-5); display:flex; flex-direction:column; gap:var(--space-2); font-size:var(--text-sm); color:var(--color-text);">
+          <li>内容を伝える（または「このファイルを見て」と渡す）</li>
+          <li>ClaudeCodeがファイルの中身を確認する</li>
+          <li>README.md として実際に作成する</li>
+          <li>「こんな内容にしました。修正しますか？」と確認</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="callout callout--tip">
+      <strong>Chat AIは「提案してくれる」、ClaudeCodeは「一緒に進める」</strong>
+      <p>どちらがよい悪いではなく、用途の向き不向きの違いです。<br>
+      ファイルを実際に扱う作業では、ClaudeCodeの便利さが一気に分かりやすくなります。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 調べるAIから進めるAIへ -->
+<section class="section section--experience">
+  <div class="container--narrow">
+    <p class="section-label">使い方の変化</p>
+    <h2 class="section-title">調べるAIから、一緒に進めるAIへ</h2>
+    <p>Chat AIの便利な使い方は「調べる・要約する・壁打ちする」でした。<br>
+    ClaudeCodeはそこから一歩進んで、作業そのものを一緒に進められます。</p>
+
+    <div class="before-after" style="margin-top:var(--space-6);">
+      <div class="before-after__item before-after__item--before">
+        <div class="before-after__header">Chat AI（従来のフロー）</div>
+        <div class="before-after__body">
+          <ol>
+            <li>AIに相談する</li>
+            <li>返ってきた案を読む</li>
+            <li>自分でファイルに貼る</li>
+            <li>微調整する</li>
+            <li>また相談する…</li>
+          </ol>
+        </div>
+      </div>
+      <div class="before-after__item before-after__item--after">
+        <div class="before-after__header">ClaudeCode（新しいフロー）</div>
+        <div class="before-after__body">
+          <ol>
+            <li>ClaudeCodeにお願いする</li>
+            <li>必要な情報を見ながら進める</li>
+            <li>ファイルを作る・直す</li>
+            <li>確認して仕上げる</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- どんな人に効くか -->
+<section class="section section--white">
+  <div class="container--narrow">
+    <p class="section-label">向いている人・向かない人</p>
+    <h2 class="section-title">どんな人にこの違いが効くのか</h2>
+    <p style="margin-bottom:var(--space-6);">ClaudeCodeの違いが実感しやすい人と、そうでない場面をまとめました。</p>
+
+    <div class="who-benefits">
+      <div class="who-card who-card--fit">
+        <h4>✅ この違いを特に実感しやすい人</h4>
+        <ul>
+          <li>ファイルや文書をよく扱う人</li>
+          <li>Chat AIの回答をコピペで使っていた人</li>
+          <li>「答えはもらえたけど反映が面倒」と感じていた人</li>
+          <li>コードや文書を定期的に整理・改善する人</li>
+          <li>繰り返し作業を自動化したい人</li>
+        </ul>
+      </div>
+      <div class="who-card who-card--maybe">
+        <h4>△ Chat AIで十分な場面</h4>
+        <ul>
+          <li>一度だけ調べたいとき</li>
+          <li>ファイルを作る必要がないとき</li>
+          <li>アイデア出しだけしたいとき</li>
+          <li>会話形式の壁打ちが目的のとき</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout callout--info" style="margin-top:var(--space-6);">
+      <strong>どちらかを選ぶより、両方使い分けるイメージ</strong>
+      <p>Chat AIで方向性を決め、ClaudeCodeで実際に形にする。この組み合わせが、一番効果的かもしれません。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 次のページへ -->
+<section class="section section--light">
+  <div class="container--narrow">
+    <div class="next-page-nav">
+      <h3>次は導入方法を選ぼう</h3>
+      <p class="text-muted text-sm" style="margin-bottom:var(--space-5);">
+        違いが分かったら、次は自分に合う導入方法を選びましょう。Desktop・CLI・VS Code拡張の3つから比較できます。
+      </p>
+      <div class="next-page-cards">
+        <a href="getting-started.html" class="next-page-card">
+          <span class="label">おすすめの次のページ</span>
+          <span class="title">導入方法を選ぶ</span>
+          <span class="desc">3つの導入方法を比較して、自分に合うものを選べます。</span>
+        </a>
+        <a href="first-steps.html" class="next-page-card">
+          <span class="label">もう始めたい</span>
+          <span class="title">はじめての使い方</span>
+          <span class="desc">最初にやることをシンプルなステップで案内します。</span>
+        </a>
+        <a href="use-cases.html" class="next-page-card">
+          <span class="label">具体例が見たい</span>
+          <span class="title">便利な活用事例</span>
+          <span class="desc">実際にどう使うかを、従来と比較しながら紹介します。</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="site-logo">Claude<span style="color:#7ec8e3;">Code</span>入門</a>
+        <p>ClaudeCode初心者向けオンボーディングサイト。<br>Chat AIの次の一歩を、やさしく体験しながら学べます。</p>
+      </div>
+      <div class="footer-nav">
+        <h4>体験・基本</h4>
+        <ul>
+          <li><a href="experience.html">まず体験してみる</a></li>
+          <li><a href="what-is-claudecode.html">ClaudeCodeとは</a></li>
+          <li><a href="vs-chat-ai.html">Chat AIとの違い</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <h4>使い方・活用</h4>
+        <ul>
+          <li><a href="getting-started.html">導入方法を選ぶ</a></li>
+          <li><a href="first-steps.html">はじめての使い方</a></li>
+          <li><a href="use-cases.html">便利な活用事例</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <h4>知識・安全</h4>
+        <ul>
+          <li><a href="pricing.html">料金とトークン</a></li>
+          <li><a href="security.html">セキュリティ</a></li>
+          <li><a href="glossary.html">用語集</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>ClaudeCode入門 — 初心者向けオンボーディングサイト</span>
+      <span>※ 掲載内容は参考情報です。最新の仕様は公式サイトをご確認ください。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>導入方法を選ぶ — ClaudeCode入門</title>
+  <meta name="description" content="ClaudeCodeの3つの導入方法（Desktopアプリ・CLI・VS Code拡張）を比較。自分に合う方法の選び方を案内します。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .method-overview {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-5);
+      margin-bottom: var(--space-10);
+    }
+    .method-overview-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      border: 2px solid var(--color-border);
+      text-align: center;
+      transition: all var(--transition-base);
+    }
+    .method-overview-card.recommended {
+      border-color: var(--color-accent);
+      box-shadow: var(--shadow-md);
+      position: relative;
+    }
+    .method-overview-card.recommended::before {
+      content: "初心者におすすめ";
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-accent);
+      color: #fff;
+      font-size: var(--text-xs);
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      white-space: nowrap;
+    }
+    .method-overview-card .icon {
+      font-size: 2.5rem;
+      margin-bottom: var(--space-3);
+    }
+    .method-overview-card h3 {
+      font-size: var(--text-lg);
+      margin-bottom: var(--space-2);
+    }
+    .method-overview-card p {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      margin: 0;
+    }
+    @media (max-width: 768px) {
+      .method-overview { grid-template-columns: 1fr; }
+    }
+
+    .decision-flow {
+      background: #fff;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+    }
+    .decision-step {
+      padding: var(--space-5) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .decision-step:last-child { border-bottom: none; padding-bottom: 0; }
+    .decision-q {
+      font-weight: 700;
+      font-size: var(--text-base);
+      margin-bottom: var(--space-3);
+    }
+    .decision-q::before {
+      content: "Q. ";
+      color: var(--color-primary);
+    }
+    .decision-options {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+    .decision-option {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      font-size: var(--text-sm);
+    }
+    .decision-option .cond {
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+      padding: 2px 10px;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+      font-size: var(--text-xs);
+      flex-shrink: 0;
+    }
+    .decision-option .result {
+      color: var(--color-text-muted);
+    }
+    .decision-option strong { color: var(--color-text); }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-logo">Claude<span>Code</span>入門</a>
+    <nav class="site-nav" aria-label="メインナビゲーション">
+      <a href="experience.html">まず体験</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">知る <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="what-is-claudecode.html">ClaudeCodeとは</a>
+          <a href="vs-chat-ai.html">Chat AIとの違い</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">使いこなす <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="getting-started.html">導入方法を選ぶ</a>
+          <a href="first-steps.html">はじめての使い方</a>
+          <a href="use-cases.html">便利な活用事例</a>
+          <a href="session-memory.html">セッション・記憶・ルール</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">料金・安全 <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="pricing.html">料金とトークン</a>
+          <a href="models.html">モデルの使い分け</a>
+          <a href="security.html">セキュリティ・オプトアウト</a>
+        </div>
+      </div>
+      <a href="faq.html">FAQ</a>
+    </nav>
+    <div class="header-cta">
+      <a href="experience.html" class="btn btn--primary">まず体験してみる</a>
+    </div>
+    <button class="hamburger" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="container--narrow">
+    <p class="section-label">Step 3 — 導入を選ぶ</p>
+    <h1>導入方法を選ぶ</h1>
+    <p class="section-lead" style="margin-bottom:0;">
+      ClaudeCodeには3つの導入方法があります。<br>
+      自分の環境や目的に合ったものを選んでみましょう。
+    </p>
+    <div class="page-summary">
+      <h3>このページで分かること</h3>
+      <ul>
+        <li>3つの導入方法（Desktop / CLI / VS Code拡張）の違い</li>
+        <li>それぞれに向いている人・メリット・デメリット</li>
+        <li>初心者におすすめの選び方</li>
+        <li>迷ったときの判断フロー</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 3行まとめ -->
+<section class="section section--white">
+  <div class="container--narrow">
+    <div class="callout callout--info">
+      <strong>3行まとめ</strong>
+      <p>ClaudeCodeにはDesktopアプリ・CLIツール・VS Code拡張の3つの入口があります。<br>
+      初心者にはDesktopアプリが一番始めやすく、CLI操作に慣れている人にはCLIが自由度高めです。<br>
+      どれを選んでも後から変更できるので、迷ったら一番簡単そうなものから始めましょう。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 導入方法は3つある -->
+<section class="section section--light">
+  <div class="container">
+    <div class="section-header--center">
+      <p class="section-label">3つの入口</p>
+      <h2 class="section-title">導入方法は3つある</h2>
+      <p class="section-lead">どれを選んでも同じClaudeCodeです。入口の違いだけです。</p>
+    </div>
+    <div class="method-overview">
+      <div class="method-overview-card recommended">
+        <div class="icon" aria-hidden="true">🖥️</div>
+        <h3>Desktopアプリ</h3>
+        <p>インストールして起動するだけ。設定が少なく、最もシンプルに始められます。</p>
+      </div>
+      <div class="method-overview-card">
+        <div class="icon" aria-hidden="true">⌨️</div>
+        <h3>CLI（コマンドライン）</h3>
+        <p>ターミナルから直接呼び出す方法。自由度が高く、スクリプトとの組み合わせも得意。</p>
+      </div>
+      <div class="method-overview-card">
+        <div class="icon" aria-hidden="true">🔌</div>
+        <h3>VS Code + 拡張</h3>
+        <p>エディタに組み込む方法。コードを書きながら隣にAIが使える環境が作れます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 各方法の詳細 -->
+<section class="section section--white">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">詳しく比較する</p>
+      <h2 class="section-title">それぞれの特徴を見る</h2>
+    </div>
+
+    <!-- Desktop -->
+    <div class="method-card is-recommended" style="margin-bottom: var(--space-6);">
+      <div class="method-card__header">
+        <div style="display:flex; align-items:center; gap:var(--space-3);">
+          <span style="font-size:1.75rem;" aria-hidden="true">🖥️</span>
+          <div>
+            <h3>Desktopアプリ</h3>
+            <div class="tag" style="margin-top:var(--space-1);">
+              <span class="badge badge--accent">初心者におすすめ</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="method-card__body">
+        <p class="for-who">向いている人</p>
+        <p>CLIに慣れていない人、まず手軽に試したい人、設定を極力減らしたい人</p>
+        <div class="pros-cons">
+          <div class="pros-cons__section pros">
+            <h4>メリット</h4>
+            <ul class="pros-cons__list">
+              <li>インストールして起動するだけで使い始められる</li>
+              <li>GUIで操作しやすい</li>
+              <li>ターミナルの知識が不要</li>
+              <li>セットアップが最も少ない</li>
+            </ul>
+          </div>
+          <div class="pros-cons__section cons">
+            <h4>デメリット（注意点）</h4>
+            <ul class="pros-cons__list">
+              <li>CLI版と比べると細かい設定の自由度が低い場合がある</li>
+              <li>バージョンにより機能の差が生じることがある</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLI -->
+    <div class="method-card" style="margin-bottom: var(--space-6);">
+      <div class="method-card__header">
+        <div style="display:flex; align-items:center; gap:var(--space-3);">
+          <span style="font-size:1.75rem;" aria-hidden="true">⌨️</span>
+          <div>
+            <h3>CLI（コマンドライン）</h3>
+            <div class="tag" style="margin-top:var(--space-1);">
+              <span class="badge badge--primary">ターミナル慣れた人向け</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="method-card__body">
+        <p class="for-who">向いている人</p>
+        <p>ターミナルを普段使う人、スクリプトと組み合わせたい人、細かいオプション設定をしたい人</p>
+        <div class="pros-cons">
+          <div class="pros-cons__section pros">
+            <h4>メリット</h4>
+            <ul class="pros-cons__list">
+              <li>柔軟なオプション指定ができる</li>
+              <li>シェルスクリプトやCIとの連携がしやすい</li>
+              <li>軽量で起動が速い</li>
+              <li>ファイル操作と自然に組み合わせられる</li>
+            </ul>
+          </div>
+          <div class="pros-cons__section cons">
+            <h4>デメリット（注意点）</h4>
+            <ul class="pros-cons__list">
+              <li>ターミナルの基礎知識が必要</li>
+              <li>最初のセットアップに少し手間がかかる</li>
+              <li>CLI操作に慣れていないと最初は戸惑いやすい</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VS Code -->
+    <div class="method-card">
+      <div class="method-card__header">
+        <div style="display:flex; align-items:center; gap:var(--space-3);">
+          <span style="font-size:1.75rem;" aria-hidden="true">🔌</span>
+          <div>
+            <h3>VS Code + 拡張</h3>
+            <div class="tag" style="margin-top:var(--space-1);">
+              <span class="badge badge--primary">開発者・エディタユーザー向け</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="method-card__body">
+        <p class="for-who">向いている人</p>
+        <p>VS Codeをすでに使っている人、コードを書きながらAIに相談したい人</p>
+        <div class="pros-cons">
+          <div class="pros-cons__section pros">
+            <h4>メリット</h4>
+            <ul class="pros-cons__list">
+              <li>エディタから離れずにAIが使える</li>
+              <li>ファイルの参照・編集がスムーズ</li>
+              <li>VS Codeの操作感と自然に統合される</li>
+              <li>コーディング作業と組み合わせやすい</li>
+            </ul>
+          </div>
+          <div class="pros-cons__section cons">
+            <h4>デメリット（注意点）</h4>
+            <ul class="pros-cons__list">
+              <li>VS Codeのインストールと設定が前提</li>
+              <li>エディタに慣れていない人には向かない</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 比較表 -->
+<section class="section section--light">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">一覧で見る</p>
+      <h2 class="section-title">3つの方法を並べて比べる</h2>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>比較軸</th>
+            <th>Desktopアプリ</th>
+            <th class="col-claude">CLI</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>始めやすさ</td>
+            <td>◎ インストールするだけ</td>
+            <td>〇 ターミナル操作が必要</td>
+          </tr>
+          <tr>
+            <td>自由度・柔軟性</td>
+            <td>〇 標準的な操作向け</td>
+            <td>◎ オプション指定など柔軟</td>
+          </tr>
+          <tr>
+            <td>必要な前提知識</td>
+            <td>特になし</td>
+            <td>ターミナルの基礎</td>
+          </tr>
+          <tr>
+            <td>他ツールとの連携</td>
+            <td>△ 単体での利用が基本</td>
+            <td>◎ スクリプト・CIと組みやすい</td>
+          </tr>
+          <tr>
+            <td>初心者のおすすめ度</td>
+            <td>⭐⭐⭐ 最もおすすめ</td>
+            <td>⭐⭐ ターミナル慣れた人向け</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-muted text-sm" style="margin-top:var(--space-3);">※ VS Code拡張はVS Code利用者向けのため、上記には含めていません。</p>
+  </div>
+</section>
+
+<!-- 迷ったときの選び方 -->
+<section class="section section--white">
+  <div class="container--narrow">
+    <p class="section-label">迷ったときに</p>
+    <h2 class="section-title">迷ったときの選び方</h2>
+    <p style="margin-bottom:var(--space-6);">いくつかの質問に答えると、自分に合う方法が見えてきます。</p>
+
+    <div class="decision-flow">
+      <div class="decision-step">
+        <p class="decision-q">ターミナル（コマンドプロンプト）を普段使いますか？</p>
+        <div class="decision-options">
+          <div class="decision-option">
+            <span class="cond">No / 分からない</span>
+            <span class="result">→ まず <strong>Desktopアプリ</strong> がおすすめ</span>
+          </div>
+          <div class="decision-option">
+            <span class="cond">Yes</span>
+            <span class="result">→ 次の質問へ</span>
+          </div>
+        </div>
+      </div>
+      <div class="decision-step">
+        <p class="decision-q">VS Codeをエディタとして使っていますか？</p>
+        <div class="decision-options">
+          <div class="decision-option">
+            <span class="cond">Yes</span>
+            <span class="result">→ <strong>VS Code拡張</strong> が使いやすい</span>
+          </div>
+          <div class="decision-option">
+            <span class="cond">No</span>
+            <span class="result">→ <strong>CLI</strong> が最も柔軟に使える</span>
+          </div>
+        </div>
+      </div>
+      <div class="decision-step">
+        <p class="decision-q">どれを選んでもOKです</p>
+        <div class="decision-options">
+          <div class="decision-option">
+            <span class="cond">補足</span>
+            <span class="result">後から別の方法に切り替えることもできます。まず1つ試してみましょう。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout--tip" style="margin-top:var(--space-6);">
+      <strong>結局、最初はどれがおすすめ？</strong>
+      <p>ターミナルに慣れていない人は <strong>Desktopアプリ</strong> が一番始めやすいです。設定が少なく、すぐ始められます。<br>
+      どの方法を選んでも、基本的な使い方は同じです。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 次のページへ -->
+<section class="section section--light">
+  <div class="container--narrow">
+    <div class="next-page-nav">
+      <h3>次ははじめての使い方へ</h3>
+      <p class="text-muted text-sm" style="margin-bottom:var(--space-5);">
+        導入方法が決まったら、最初に何をするかを確認しましょう。
+      </p>
+      <div class="next-page-cards">
+        <a href="first-steps.html" class="next-page-card">
+          <span class="label">おすすめの次のページ</span>
+          <span class="title">はじめての使い方</span>
+          <span class="desc">最初にやることをステップで案内します。</span>
+        </a>
+        <a href="use-cases.html" class="next-page-card">
+          <span class="label">使い方のイメージを広げる</span>
+          <span class="title">便利な活用事例</span>
+          <span class="desc">どんな場面で使えるかを事例で紹介します。</span>
+        </a>
+        <a href="pricing.html" class="next-page-card">
+          <span class="label">料金が気になる</span>
+          <span class="title">料金とトークン</span>
+          <span class="desc">コストの考え方をやさしく説明します。</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="site-logo">Claude<span style="color:#7ec8e3;">Code</span>入門</a>
+        <p>ClaudeCode初心者向けオンボーディングサイト。<br>Chat AIの次の一歩を、やさしく体験しながら学べます。</p>
+      </div>
+      <div class="footer-nav">
+        <h4>体験・基本</h4>
+        <ul>
+          <li><a href="experience.html">まず体験してみる</a></li>
+          <li><a href="what-is-claudecode.html">ClaudeCodeとは</a></li>
+          <li><a href="vs-chat-ai.html">Chat AIとの違い</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <h4>使い方・活用</h4>
+        <ul>
+          <li><a href="getting-started.html">導入方法を選ぶ</a></li>
+          <li><a href="first-steps.html">はじめての使い方</a></li>
+          <li><a href="use-cases.html">便利な活用事例</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <h4>知識・安全</h4>
+        <ul>
+          <li><a href="pricing.html">料金とトークン</a></li>
+          <li><a href="security.html">セキュリティ</a></li>
+          <li><a href="glossary.html">用語集</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>ClaudeCode入門 — 初心者向けオンボーディングサイト</span>
+      <span>※ 掲載内容は参考情報です。最新の仕様は公式サイトをご確認ください。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

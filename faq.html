@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ — ClaudeCode入門</title>
+  <meta name="description" content="ClaudeCodeに関するよくある質問と答え。初心者が抱きやすい疑問をまとめて解消します。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .faq-category {
+      margin-bottom: var(--space-12);
+    }
+    .faq-category-title {
+      font-size: var(--text-xl);
+      font-weight: 800;
+      color: var(--color-primary);
+      margin-bottom: var(--space-5);
+      padding-bottom: var(--space-3);
+      border-bottom: 2px solid var(--color-primary-light);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .faq-category-title .icon { font-size: 1.5rem; }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-logo">Claude<span>Code</span>入門</a>
+    <nav class="site-nav" aria-label="メインナビゲーション">
+      <a href="experience.html">まず体験</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">知る <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="what-is-claudecode.html">ClaudeCodeとは</a>
+          <a href="vs-chat-ai.html">Chat AIとの違い</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">使いこなす <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="getting-started.html">導入方法を選ぶ</a>
+          <a href="first-steps.html">はじめての使い方</a>
+          <a href="use-cases.html">便利な活用事例</a>
+          <a href="session-memory.html">セッション・記憶・ルール</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">料金・安全 <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="pricing.html">料金とトークン</a>
+          <a href="models.html">モデルの使い分け</a>
+          <a href="security.html">セキュリティ・オプトアウト</a>
+        </div>
+      </div>
+      <a href="faq.html">FAQ</a>
+    </nav>
+    <div class="header-cta">
+      <a href="experience.html" class="btn btn--primary">まず体験してみる</a>
+    </div>
+    <button class="hamburger" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container--narrow">
+    <p class="section-label">よくある疑問に答えます</p>
+    <h1>FAQ</h1>
+    <p class="section-lead" style="margin-bottom:0;">
+      ClaudeCodeを使い始める前後に、よく出てくる疑問をまとめました。<br>
+      気になる質問をクリックすると、回答が表示されます。
+    </p>
+  </div>
+</section>
+
+<section class="section section--white">
+  <div class="container--narrow">
+
+    <!-- カテゴリ：基本・始め方 -->
+    <div class="faq-category">
+      <h2 class="faq-category-title">
+        <span class="icon" aria-hidden="true">🚀</span>
+        基本・始め方
+      </h2>
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            まず何から始めればよいですか？
+            <span class="faq-arrow" aria-hidden="true">›</span>
+          </button>
+          <div class="faq-answer">
+            <p>まずは「<a href="experience.html">まず体験してみる</a>」ページを見てみましょう。ClaudeCodeがどんな動きをするかを先に体感するのが、一番スムーズな入口です。</p>
+            <p>体験を見た後は「<a href="getting-started.html">導入方法を選ぶ</a>」で自分に合う方法を確認し、「<a href="first-steps.html">はじめての使い方</a>」でやってみるとよいです。</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            プログラミング経験が少なくても使えますか？
+            <span class="faq-arrow" aria-hidden="true">›</span>
+          </button>
+          <div class="faq-answer">
+            <p>はい、使えます。ClaudeCodeはコーダーだけのツールではありません。文書作成、ファイル整理、アイデアの形式化など、プログラミングと関係のない作業でも活用できます。</p>
+            <p>ただし、「ファイル」や「フォルダ」という概念には慣れていると使いやすいです。最初は小さな作業から試してみましょう。</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Chat AIと何が違いますか？
+            <span class="faq-arrow" aria-hidden="true">›</span>
+          </button>
+          <div class="faq-answer">
+            <p>一番大きな違いは「実際のファイルを扱えること」です。Chat AIは会話で答えを返しますが、ClaudeCodeはその答えを実際のファイルとして作ったり、修正したりするところまで進められます。</p>
+            <p>詳しくは「<a href="vs-chat-ai.html">Chat AIとの違い</a>」のページで比較表を使って説明しています。</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            どの導入方法（Desktop・CLI・VS Code）がおすすめですか？
+            <span class="faq-arrow" aria-hidden="true">›</span>
+          </button>
+          <div class="faq-answer">
+            <p>ターミナルに慣れていない初心者は <strong>Desktopアプリ</strong> が最も始めやすいです。インストールして起動するだけで使えます。</p>
+            <p>ターミナルを使い慣れている人にはCLIが自由度高くおすすめです。VS Codeを使っている場合はVS Code拡張が便利です。詳しくは「<a href="getting-started.html">導入方法を選ぶ</a>」で解説しています。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- カテゴリ：料金・制限 -->
+    <div class="faq-category">
+      <h2 class="faq-category-title">
+        <span class="icon" aria-hidden="true">💴</span>
+        料金・制限
+      </h2>
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            料金はどれくらい気にすべきですか？
+            <span class="faq-arrow" aria-hidden="true">›</span>
+          </button>
+          <div class="faq-answer">
+            <p>最初は気にしすぎなくて大丈夫です。サブスクリプションプランの中で使う場合、一般的な利用範囲であれば上限内に収まることが多いです。</p>
+            <p>「大きなファイルをたくさん渡す」「長時間大量に使う」といった場合は消費が増えることがあります。詳しくは「<a href="pricing.html">料金とトークン</a>」を確認してください。</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            使いすぎると勝手に追加課金されますか？
+            <span class="faq-arrow" aria-hidden="true">›</span>
+          </button>
+          <div class="faq-answer">
+            <p>サブスクリプション内での利用の場合、上限に達すると「一時停止」になり、自動的に追加課金されるわけではありません（ただし、プランによって異なります）。</p>
+            <p>最新の料金体系はAnthropic公式サイトで確認してください。料金や制限の仕様は変更されることがあります。</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            使える量の上限に達したらどうなりますか？
+            <span class="faq-arrow" aria-hidden="true">›</span>
+          </button>
+          <div class="faq-answer">
+            <p>一定時間、新しい依頼ができなくなります（一時停止）。作成済みのファイルはそのまま残ります。待ち時間が過ぎると、また利用できるようになります。</p>
+            <p>具体的な制限の仕組みや時間は、プランや時期によって変わることがあります。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- カテゴリ：安全・プライバシー -->
+    <div class="faq-category">
+      <h2 class="faq-category-title">
+        <span class="icon" aria-hidden="true">🔒</span>
+        安全・プライバシー
+      </h2>
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            勝手に危ない操作をされませんか？
+            <span class="faq-arrow" aria-hidden="true">›</span>
+          </button>
+          <div class="faq-answer">
+            <p>ClaudeCodeはサンドボックスの仕組みで動作範囲が制限されており、許可されていない操作は行えません。また、大きな変更をする前に確認を求める設計になっています。</p>
+            <p>ただし、「本番環境への操作」「機密情報を含む作業」などはしっかり確認する習慣をつけることをおすすめします。詳しくは「<a href="security.html">セキュリティ・オプトアウト・サンドボックス</a>」を参照してください。</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            オプトアウトは気にしたほうがよいですか？
+            <span class="faq-arrow" aria-hidden="true">›</span>
+          </button>
+          <div class="faq-answer">
+            <p>機密情報や個人情報を含むデータを扱う場合は、オプトアウトの設定を確認しておくとよいでしょう。</p>
+            <p>一般的な用途で機密性の低いデータしか扱わない場合は、最初から強く意識しなくても問題ないことが多いです。詳しくは「<a href="security.html#optout">オプトアウトとは</a>」を参照し、最新の公式情報もご確認ください。</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            会話内容はAnthropicに送られていますか？
+            <span class="faq-arrow" aria-hidden="true">›</span>
+          </button>
+          <div class="faq-answer">
+            <p>ClaudeCodeはAnthropicのAPIを通じて動作するため、会話内容はサーバーに送られます。機密情報やパスワードなどはやり取りに含めないことをおすすめします。</p>
+            <p>データの取り扱いに関する詳細は、Anthropicのプライバシーポリシーを確認してください。ポリシーは変更されることがあります。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- カテゴリ：使い方 -->
+    <div class="faq-category">
+      <h2 class="faq-category-title">
+        <span class="icon" aria-hidden="true">💬</span>
+        使い方・操作
+      </h2>
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            うまく指示できるか不安です
+            <span class="faq-arrow" aria-hidden="true">›</span>
+          </button>
+          <div class="faq-answer">
+            <p>最初からうまく指示できなくて大丈夫です。一発で完璧な結果を出そうとせず、「まずやってみて、気に入らなければ修正を頼む」という使い方が一番うまくいきます。</p>
+            <p>「ここをもう少し短くして」「もっとやさしい言葉で書いて」のように、追加で調整を依頼できます。詳しくは「<a href="first-steps.html">はじめての使い方</a>」を参照してください。</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            思っていた結果と違うものが返ってきました
+            <span class="faq-arrow" aria-hidden="true">›</span>
+          </button>
+          <div class="faq-answer">
+            <p>「こうじゃなくて、○○の方向で修正して」と追加で伝えましょう。ClaudeCodeは会話の中で調整できます。</p>
+            <p>もしかなりずれている場合は、「最初に戻って、○○したい」と目的から説明し直すと伝わりやすくなることがあります。</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            日本語で指示してよいですか？
+            <span class="faq-arrow" aria-hidden="true">›</span>
+          </button>
+          <div class="faq-answer">
+            <p>はい、日本語で問題ありません。ClaudeCodeは日本語の指示を理解して、日本語で回答することができます。</p>
+            <p>ただし、返答の言語を固定したい場合は「返答は必ず日本語で」とルールに書いておくと確実です。</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            どんなファイルを渡せますか？
+            <span class="faq-arrow" aria-hidden="true">›</span>
+          </button>
+          <div class="faq-answer">
+            <p>テキストベースのファイルは幅広く扱えます。Markdownファイル、コードファイル、設定ファイル、テキストドキュメントなど多くの形式に対応しています。</p>
+            <p>ただし、バイナリファイル（画像、動画など）や特殊な形式については制限がある場合があります。最新の対応形式は公式ドキュメントで確認してください。</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            ルールやスキルって最初から使わないといけませんか？
+            <span class="faq-arrow" aria-hidden="true">›</span>
+          </button>
+          <div class="faq-answer">
+            <p>最初は使わなくて大丈夫です。普通に会話で依頼するだけでClaudeCodeは十分機能します。</p>
+            <p>使い込んできて「毎回同じことを言っている」と感じたタイミングで、ルールやスキルを活用してみましょう。詳しくは「<a href="session-memory.html">セッション・記憶・ルール・スキル</a>」を参照してください。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- カテゴリ：モデル・技術 -->
+    <div class="faq-category">
+      <h2 class="faq-category-title">
+        <span class="icon" aria-hidden="true">🤖</span>
+        モデル・技術
+      </h2>
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            OpusとSonnetとHaiku、どれを使えばよいですか？
+            <span class="faq-arrow" aria-hidden="true">›</span>
+          </button>
+          <div class="faq-answer">
+            <p>迷ったら <strong>Sonnet</strong> を選んでください。精度と速さのバランスが取れており、多くの場面で最適です。</p>
+            <p>速さを優先したい場合はHaiku、複雑な作業で精度を最大限に高めたい場合はOpusを検討してください。詳しくは「<a href="models.html">モデルの使い分け</a>」を参照してください。</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            ClaudeCodeとClaude.ai（Webブラウザ版）は別物ですか？
+            <span class="faq-arrow" aria-hidden="true">›</span>
+          </button>
+          <div class="faq-answer">
+            <p>同じAnthropicのAIですが、用途が異なります。Claude.aiはブラウザで使う会話AIで、ClaudeCodeはローカル環境でファイルを扱いながら使うツールです。</p>
+            <p>ClaudeCodeの方がファイル操作・作業支援に特化しており、「会話で答えをもらうだけ」を超えた使い方ができます。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="callout callout--info" style="margin-top:var(--space-8);">
+      <strong>解決しない疑問がある場合は</strong>
+      <p>このFAQで解決しなかった場合は、<a href="https://www.anthropic.com" target="_blank" rel="noopener">Anthropic公式サイト</a>のドキュメントやサポートをご確認ください。</p>
+    </div>
+
+  </div>
+</section>
+
+<section class="section section--light">
+  <div class="container--narrow">
+    <div class="next-page-nav">
+      <h3>これで基本は網羅できました</h3>
+      <p class="text-muted text-sm" style="margin-bottom:var(--space-5);">
+        最初からすべてを知る必要はありません。まず体験してみることが大切です。
+      </p>
+      <div class="next-page-cards">
+        <a href="experience.html" class="next-page-card">
+          <span class="label">まだ体験していない</span>
+          <span class="title">まず体験してみる</span>
+          <span class="desc">ClaudeCodeの動きを先に見てみましょう。</span>
+        </a>
+        <a href="getting-started.html" class="next-page-card">
+          <span class="label">導入してみる</span>
+          <span class="title">導入方法を選ぶ</span>
+          <span class="desc">3つの入口から自分に合うものを選びます。</span>
+        </a>
+        <a href="glossary.html" class="next-page-card">
+          <span class="label">用語が気になる</span>
+          <span class="title">用語集</span>
+          <span class="desc">主要な用語をやさしく解説しています。</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="site-logo">Claude<span style="color:#7ec8e3;">Code</span>入門</a>
+        <p>ClaudeCode初心者向けオンボーディングサイト。</p>
+      </div>
+      <div class="footer-nav">
+        <h4>体験・基本</h4>
+        <ul>
+          <li><a href="experience.html">まず体験してみる</a></li>
+          <li><a href="what-is-claudecode.html">ClaudeCodeとは</a></li>
+          <li><a href="vs-chat-ai.html">Chat AIとの違い</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <h4>使い方・活用</h4>
+        <ul>
+          <li><a href="getting-started.html">導入方法を選ぶ</a></li>
+          <li><a href="first-steps.html">はじめての使い方</a></li>
+          <li><a href="use-cases.html">便利な活用事例</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <h4>知識・安全</h4>
+        <ul>
+          <li><a href="pricing.html">料金とトークン</a></li>
+          <li><a href="security.html">セキュリティ</a></li>
+          <li><a href="glossary.html">用語集</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>ClaudeCode入門 — 初心者向けオンボーディングサイト</span>
+      <span>※ 掲載内容は参考情報です。最新の仕様は公式サイトをご確認ください。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

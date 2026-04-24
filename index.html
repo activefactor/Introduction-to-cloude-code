@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClaudeCodeをやさしく始めよう</title>
+  <meta name="description" content="ClaudeCode初心者向けオンボーディングサイト。Chat AIの次の一歩として、実際にファイルを作ったり直したりできるAIを、やさしく体験しながら学べます。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    /* ---------- Hero ---------- */
+    .hero {
+      background: linear-gradient(150deg, #f0f5ff 0%, #fafafa 50%, #fff8f4 100%);
+      padding: var(--space-20) 0 var(--space-16);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: rgba(46, 116, 232, 0.06);
+      pointer-events: none;
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-12);
+      align-items: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+      border-radius: var(--radius-full);
+      padding: var(--space-1) var(--space-4);
+      font-size: var(--text-sm);
+      font-weight: 700;
+      margin-bottom: var(--space-5);
+    }
+    .hero-title {
+      font-size: 2.75rem;
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-5);
+    }
+    .hero-title .highlight {
+      color: var(--color-primary);
+      position: relative;
+    }
+    .hero-desc {
+      font-size: var(--text-lg);
+      color: var(--color-text-muted);
+      line-height: var(--leading-normal);
+      margin-bottom: var(--space-8);
+    }
+    .hero-ctas {
+      display: flex;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+    /* Hero diagram */
+    .hero-diagram {
+      background: #fff;
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--color-border);
+    }
+    .hero-diagram__title {
+      font-size: var(--text-sm);
+      font-weight: 700;
+      color: var(--color-text-muted);
+      text-align: center;
+      margin-bottom: var(--space-6);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .hero-flow {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      align-items: center;
+    }
+    .hero-flow__node {
+      background: var(--color-primary-light);
+      border: 2px solid var(--color-primary);
+      border-radius: var(--radius-md);
+      padding: var(--space-3) var(--space-6);
+      width: 100%;
+      max-width: 280px;
+      text-align: center;
+    }
+    .hero-flow__node span {
+      font-weight: 700;
+      font-size: var(--text-base);
+      color: var(--color-primary);
+    }
+    .hero-flow__node small {
+      display: block;
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      margin-top: 2px;
+    }
+    .hero-flow__arrow {
+      color: var(--color-primary);
+      font-size: 1.25rem;
+    }
+    .hero-flow__node--result {
+      background: var(--color-accent-light);
+      border-color: var(--color-accent);
+    }
+    .hero-flow__node--result span { color: var(--color-accent-dark); }
+
+    @media (max-width: 768px) {
+      .hero { padding: var(--space-12) 0; }
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: var(--space-8);
+      }
+      .hero-title { font-size: 2rem; }
+      .hero-diagram { order: -1; }
+    }
+
+    /* ---------- Surprise section ---------- */
+    .surprise-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+    }
+    .surprise-item {
+      background: #fff;
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      border: 1px solid var(--color-border);
+      transition: all var(--transition-base);
+      position: relative;
+      overflow: hidden;
+    }
+    .surprise-item::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--color-primary);
+    }
+    .surprise-item:nth-child(2)::after { background: var(--color-accent); }
+    .surprise-item:nth-child(3)::after { background: var(--color-success); }
+    .surprise-item:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .surprise-num {
+      font-size: 2.5rem;
+      line-height: 1;
+      margin-bottom: var(--space-4);
+    }
+    .surprise-item h3 { font-size: var(--text-xl); margin-bottom: var(--space-2); }
+    .surprise-item p { font-size: var(--text-base); color: var(--color-text-muted); margin: 0; }
+
+    @media (max-width: 768px) {
+      .surprise-list { grid-template-columns: 1fr; }
+    }
+
+    /* ---------- Mini comparison ---------- */
+    .mini-compare {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: var(--space-5);
+      align-items: start;
+    }
+    .mini-compare__vs {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      background: var(--color-primary);
+      color: #fff;
+      border-radius: var(--radius-full);
+      font-weight: 800;
+      font-size: var(--text-base);
+      flex-shrink: 0;
+      margin-top: var(--space-6);
+    }
+    .mini-compare__panel {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+    }
+    .mini-compare__panel--claude {
+      border-color: var(--color-primary);
+      box-shadow: var(--shadow-md);
+    }
+    .mini-compare__header {
+      padding: var(--space-3) var(--space-5);
+      font-size: var(--text-sm);
+      font-weight: 700;
+    }
+    .mini-compare__panel:not(.mini-compare__panel--claude) .mini-compare__header {
+      background: #f7fafc;
+      color: var(--color-text-muted);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .mini-compare__panel--claude .mini-compare__header {
+      background: var(--color-primary);
+      color: #fff;
+      border-bottom: 1px solid var(--color-primary-dark);
+    }
+    .mini-compare__body {
+      background: #fff;
+      padding: var(--space-5);
+    }
+    .mini-compare__row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-2) 0;
+      border-bottom: 1px solid var(--color-border);
+      font-size: var(--text-sm);
+    }
+    .mini-compare__row:last-child { border-bottom: none; }
+    .mini-compare__icon { font-size: 1rem; flex-shrink: 0; }
+    .mini-compare__text { color: var(--color-text-muted); }
+    .mini-compare__panel--claude .mini-compare__text {
+      color: var(--color-text);
+      font-weight: 500;
+    }
+    .mini-compare__detail-link {
+      margin-top: var(--space-4);
+      text-align: center;
+    }
+    @media (max-width: 640px) {
+      .mini-compare {
+        grid-template-columns: 1fr;
+      }
+      .mini-compare__vs { display: none; }
+    }
+
+    /* ---------- Path selection ---------- */
+    .path-cards-home {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-5);
+    }
+    .path-card-home {
+      background: #fff;
+      border-radius: var(--radius-xl);
+      padding: var(--space-7);
+      border: 2px solid var(--color-border);
+      text-decoration: none;
+      color: var(--color-text);
+      transition: all var(--transition-base);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+    .path-card-home:hover {
+      border-color: var(--color-primary);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+      color: var(--color-text);
+    }
+    .path-card-home .icon { font-size: 2.5rem; line-height: 1; }
+    .path-card-home h3 { font-size: var(--text-lg); }
+    .path-card-home p {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      flex: 1;
+      margin: 0;
+    }
+    .path-card-home .arrow {
+      font-size: var(--text-sm);
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+    @media (max-width: 768px) {
+      .path-cards-home { grid-template-columns: 1fr; }
+    }
+
+    /* ---------- Use case preview ---------- */
+    .usecase-preview {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-5);
+    }
+    .usecase-preview-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      border: 1px solid var(--color-border);
+      transition: all var(--transition-base);
+      text-decoration: none;
+      color: var(--color-text);
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
+    }
+    .usecase-preview-card:hover {
+      border-color: var(--color-primary);
+      box-shadow: var(--shadow-md);
+      color: var(--color-text);
+    }
+    .usecase-preview-card .icon {
+      font-size: 1.75rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .usecase-preview-card h4 {
+      font-size: var(--text-base);
+      margin-bottom: var(--space-1);
+    }
+    .usecase-preview-card p {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      margin: 0;
+    }
+    @media (max-width: 640px) {
+      .usecase-preview { grid-template-columns: 1fr; }
+    }
+
+    /* ---------- Anxiety section ---------- */
+    .anxiety-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-4);
+    }
+    .anxiety-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: var(--space-5) var(--space-6);
+      border: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      text-decoration: none;
+      color: var(--color-text);
+      transition: all var(--transition-base);
+    }
+    .anxiety-card:hover {
+      border-color: var(--color-primary);
+      box-shadow: var(--shadow-sm);
+      color: var(--color-text);
+    }
+    .anxiety-card .icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      background: var(--color-primary-light);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .anxiety-card h4 {
+      font-size: var(--text-base);
+      margin-bottom: 2px;
+    }
+    .anxiety-card p {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      margin: 0;
+    }
+    @media (max-width: 640px) {
+      .anxiety-cards { grid-template-columns: 1fr; }
+    }
+
+    /* ---------- Reading order ---------- */
+    .reading-order {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      align-items: center;
+    }
+    .reading-step {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .reading-step a {
+      background: #fff;
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-full);
+      padding: var(--space-2) var(--space-5);
+      font-size: var(--text-sm);
+      font-weight: 700;
+      color: var(--color-text);
+      text-decoration: none;
+      transition: all var(--transition-fast);
+    }
+    .reading-step a:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+    .reading-step a.primary {
+      border-color: var(--color-accent);
+      background: var(--color-accent);
+      color: #fff;
+    }
+    .reading-step a.primary:hover {
+      background: var(--color-accent-dark);
+      border-color: var(--color-accent-dark);
+      color: #fff;
+    }
+    .reading-arrow {
+      color: var(--color-text-light);
+      font-size: 1.2rem;
+    }
+    @media (max-width: 640px) {
+      .reading-order { flex-direction: column; align-items: flex-start; }
+      .reading-arrow { transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-logo">Claude<span>Code</span>入門</a>
+    <nav class="site-nav" aria-label="メインナビゲーション">
+      <a href="experience.html">まず体験</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">知る <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="what-is-claudecode.html">ClaudeCodeとは</a>
+          <a href="vs-chat-ai.html">Chat AIとの違い</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">使いこなす <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="getting-started.html">導入方法を選ぶ</a>
+          <a href="first-steps.html">はじめての使い方</a>
+          <a href="use-cases.html">便利な活用事例</a>
+          <a href="session-memory.html">セッション・記憶・ルール</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">料金・安全 <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="pricing.html">料金とトークン</a>
+          <a href="models.html">モデルの使い分け</a>
+          <a href="security.html">セキュリティ・オプトアウト</a>
+        </div>
+      </div>
+      <a href="faq.html">FAQ</a>
+    </nav>
+    <div class="header-cta">
+      <a href="experience.html" class="btn btn--primary">まず体験してみる</a>
+    </div>
+    <button class="hamburger" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="hero-eyebrow">
+          <span>✦</span> ClaudeCode初心者向けガイド
+        </div>
+        <h1 class="hero-title">
+          会話するだけで<br>終わらない。<br>
+          <span class="highlight">ClaudeCode</span>は、<br>ファイルづくりまで<br>一緒に進められるAI。
+        </h1>
+        <p class="hero-desc">
+          調べる・要約する・壁打ちする。<br>
+          その次の一歩として、実際にファイルを作ったり直したりできるのがClaudeCodeです。
+        </p>
+        <div class="hero-ctas">
+          <a href="experience.html" class="btn btn--primary btn--lg">まず体験してみる →</a>
+          <a href="what-is-claudecode.html" class="btn btn--secondary btn--lg">ClaudeCodeとは？</a>
+        </div>
+      </div>
+
+      <div class="hero-diagram" aria-label="ClaudeCodeの動作イメージ図">
+        <p class="hero-diagram__title">ClaudeCodeで起きること</p>
+        <div class="hero-flow">
+          <div class="hero-flow__node">
+            <span>👤 あなたが依頼する</span>
+            <small>「このファイルを整理して」など</small>
+          </div>
+          <div class="hero-flow__arrow" aria-hidden="true">↓</div>
+          <div class="hero-flow__node">
+            <span>🔍 内容を読み取る</span>
+            <small>ファイルやフォルダの中身を確認</small>
+          </div>
+          <div class="hero-flow__arrow" aria-hidden="true">↓</div>
+          <div class="hero-flow__node">
+            <span>✏️ ファイルを作る・直す</span>
+            <small>実際の作業として進める</small>
+          </div>
+          <div class="hero-flow__arrow" aria-hidden="true">↓</div>
+          <div class="hero-flow__node hero-flow__node--result">
+            <span>✅ あなたが確認して完成</span>
+            <small>一緒に仕上げるイメージ</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3つの驚き ===== -->
+<section class="section section--white">
+  <div class="container">
+    <div class="section-header--center">
+      <p class="section-label">ClaudeCodeの特徴</p>
+      <h2 class="section-title">まず見てほしい、ClaudeCodeで起きること</h2>
+      <p class="section-lead">Chat AIと比べて「ここが違う」と感じるポイントを3つ紹介します。</p>
+    </div>
+    <div class="surprise-list">
+      <div class="surprise-item">
+        <div class="surprise-num" aria-hidden="true">📄</div>
+        <h3>ファイルを作れる</h3>
+        <p>アイデアだけでなく、READMEやスクリプトのたたき台まで形にできます。会話の結果が、実際のファイルとして残ります。</p>
+      </div>
+      <div class="surprise-item">
+        <div class="surprise-num" aria-hidden="true">✏️</div>
+        <h3>ファイルを直せる</h3>
+        <p>「こう修正したら？」という提案だけで終わらず、実際の変更まで進めます。コピペの手間がぐっと減ります。</p>
+      </div>
+      <div class="surprise-item">
+        <div class="surprise-num" aria-hidden="true">🚀</div>
+        <h3>作業を前に進められる</h3>
+        <p>調査、整理、作成、改善を会話の流れでつなげられます。一度始めたら、最後まで一緒に進んでいけます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Chat AIとの違いミニ比較 ===== -->
+<section class="section section--light">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">比較で分かる</p>
+      <h2 class="section-title">Chat AIと何が違うの？</h2>
+      <p class="section-lead">既存のChat AIと比べると、ClaudeCodeの特徴が見えてきます。</p>
+    </div>
+    <div class="mini-compare">
+      <div class="mini-compare__panel">
+        <div class="mini-compare__header">Chat AI（従来）</div>
+        <div class="mini-compare__body">
+          <div class="mini-compare__row">
+            <span class="mini-compare__icon">💬</span>
+            <span class="mini-compare__text">会話で回答を返してくれる</span>
+          </div>
+          <div class="mini-compare__row">
+            <span class="mini-compare__icon">📋</span>
+            <span class="mini-compare__text">答えを自分でコピペ・反映する</span>
+          </div>
+          <div class="mini-compare__row">
+            <span class="mini-compare__icon">🔄</span>
+            <span class="mini-compare__text">作業は毎回ゼロから始まる</span>
+          </div>
+          <div class="mini-compare__row">
+            <span class="mini-compare__icon">📁</span>
+            <span class="mini-compare__text">実ファイルは直接扱えない</span>
+          </div>
+        </div>
+      </div>
+      <div class="mini-compare__vs" aria-hidden="true">VS</div>
+      <div class="mini-compare__panel mini-compare__panel--claude">
+        <div class="mini-compare__header">ClaudeCode</div>
+        <div class="mini-compare__body">
+          <div class="mini-compare__row">
+            <span class="mini-compare__icon">✨</span>
+            <span class="mini-compare__text">会話しながら作業も進める</span>
+          </div>
+          <div class="mini-compare__row">
+            <span class="mini-compare__icon">✅</span>
+            <span class="mini-compare__text">結果をファイルとして直接作成・修正</span>
+          </div>
+          <div class="mini-compare__row">
+            <span class="mini-compare__icon">🔗</span>
+            <span class="mini-compare__text">会話の流れを作業に活かせる</span>
+          </div>
+          <div class="mini-compare__row">
+            <span class="mini-compare__icon">📂</span>
+            <span class="mini-compare__text">実ファイルを読んで操作できる</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mini-compare__detail-link" style="margin-top: var(--space-6); text-align: center;">
+      <a href="vs-chat-ai.html" class="btn btn--secondary">詳しい比較を見る →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== あなたはどこから始める？ ===== -->
+<section class="section section--white">
+  <div class="container">
+    <div class="section-header--center">
+      <p class="section-label">あなたに合った入口</p>
+      <h2 class="section-title">あなたはどこから始める？</h2>
+      <p class="section-lead">目的に合わせて、最初に読むページを選んでみてください。</p>
+    </div>
+    <div class="path-cards-home">
+      <a href="experience.html" class="path-card-home">
+        <div class="icon" aria-hidden="true">👀</div>
+        <h3>まず何ができるか知りたい</h3>
+        <p>説明より先に体験してみたい人へ。ClaudeCodeで何が起きるかを、流れで見せます。</p>
+        <span class="arrow">体験ページへ →</span>
+      </a>
+      <a href="getting-started.html" class="path-card-home">
+        <div class="icon" aria-hidden="true">🛠️</div>
+        <h3>自分に合う導入方法を知りたい</h3>
+        <p>Desktop / CLI / VS Code拡張の3つから選べます。迷ったときの選び方も案内します。</p>
+        <span class="arrow">導入方法ページへ →</span>
+      </a>
+      <a href="pricing.html" class="path-card-home">
+        <div class="icon" aria-hidden="true">💰</div>
+        <h3>料金や安全性が気になる</h3>
+        <p>使い始める前に不安を解消したい人へ。料金・制限・セキュリティをやさしく整理しています。</p>
+        <span class="arrow">料金・安全ページへ →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 便利な活用例プレビュー ===== -->
+<section class="section section--light">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">こんな使い方ができます</p>
+      <h2 class="section-title">みんなが便利だと感じる理由</h2>
+      <p class="section-lead">技術者でなくても使える場面が、ClaudeCodeにはたくさんあります。</p>
+    </div>
+    <div class="usecase-preview">
+      <a href="use-cases.html" class="usecase-preview-card">
+        <div class="icon" aria-hidden="true">📝</div>
+        <div>
+          <h4>READMEや資料のたたき台を作る</h4>
+          <p>内容を伝えるだけで、構成のある文書をすぐ作れます。</p>
+        </div>
+      </a>
+      <a href="use-cases.html" class="usecase-preview-card">
+        <div class="icon" aria-hidden="true">⚙️</div>
+        <div>
+          <h4>小さな自動化スクリプトを作る</h4>
+          <p>毎日の繰り返し作業を、短い会話でコードにできます。</p>
+        </div>
+      </a>
+      <a href="use-cases.html" class="usecase-preview-card">
+        <div class="icon" aria-hidden="true">🔍</div>
+        <div>
+          <h4>既存ファイルを読んで整理・改善する</h4>
+          <p>ファイルの中身を読みながら、修正まで一気に進められます。</p>
+        </div>
+      </a>
+      <a href="use-cases.html" class="usecase-preview-card">
+        <div class="icon" aria-hidden="true">🧩</div>
+        <div>
+          <h4>コードを理解して次の手を考える</h4>
+          <p>「このコードは何をしているか」をファイルを見ながら説明してもらえます。</p>
+        </div>
+      </a>
+    </div>
+    <div style="text-align: center; margin-top: var(--space-8);">
+      <a href="use-cases.html" class="btn btn--secondary">活用事例をすべて見る →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 不安を下げる導線 ===== -->
+<section class="section section--white">
+  <div class="container">
+    <div class="section-header--center">
+      <p class="section-label">気になる疑問に答えます</p>
+      <h2 class="section-title">料金や安全性が気になる人へ</h2>
+      <p class="section-lead">使い始める前によくある不安を、ページで整理しています。</p>
+    </div>
+    <div class="anxiety-cards">
+      <a href="pricing.html" class="anxiety-card">
+        <div class="icon" aria-hidden="true">💴</div>
+        <div>
+          <h4>料金はどれくらい気にすればいい？</h4>
+          <p>トークンの考え方と、上限への向き合い方を案内します。</p>
+        </div>
+      </a>
+      <a href="security.html" class="anxiety-card">
+        <div class="icon" aria-hidden="true">🔒</div>
+        <div>
+          <h4>勝手に危ない操作をされない？</h4>
+          <p>ClaudeCodeの安全設計と注意点をやさしく説明します。</p>
+        </div>
+      </a>
+      <a href="security.html#optout" class="anxiety-card">
+        <div class="icon" aria-hidden="true">🛡️</div>
+        <div>
+          <h4>オプトアウトは気にしたほうがいい？</h4>
+          <p>オプトアウトの考え方と、迷ったときの基本対応を紹介します。</p>
+        </div>
+      </a>
+      <a href="glossary.html" class="anxiety-card">
+        <div class="icon" aria-hidden="true">📖</div>
+        <div>
+          <h4>用語が難しそうで不安</h4>
+          <p>セッション・トークン・スキルなど主要語をやさしく解説します。</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== おすすめの読み順 ===== -->
+<section class="section section--light">
+  <div class="container">
+    <div class="section-header--center">
+      <p class="section-label">迷ったらこの順番で</p>
+      <h2 class="section-title">おすすめの読み順</h2>
+      <p class="section-lead">初めての人は、この順番で読むと一番スムーズに理解できます。</p>
+    </div>
+    <div style="max-width: 640px; margin: 0 auto;">
+      <div class="reading-order">
+        <div class="reading-step">
+          <a href="experience.html" class="primary">① まず体験してみる</a>
+        </div>
+        <span class="reading-arrow" aria-hidden="true">→</span>
+        <div class="reading-step">
+          <a href="vs-chat-ai.html">② Chat AIとの違い</a>
+        </div>
+        <span class="reading-arrow" aria-hidden="true">→</span>
+        <div class="reading-step">
+          <a href="getting-started.html">③ 導入方法を選ぶ</a>
+        </div>
+        <span class="reading-arrow" aria-hidden="true">→</span>
+        <div class="reading-step">
+          <a href="first-steps.html">④ はじめての使い方</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="site-logo">Claude<span style="color: #7ec8e3;">Code</span>入門</a>
+        <p>ClaudeCode初心者向けオンボーディングサイト。<br>Chat AIの次の一歩を、やさしく体験しながら学べます。</p>
+      </div>
+      <div class="footer-nav">
+        <h4>体験・基本</h4>
+        <ul>
+          <li><a href="experience.html">まず体験してみる</a></li>
+          <li><a href="what-is-claudecode.html">ClaudeCodeとは</a></li>
+          <li><a href="vs-chat-ai.html">Chat AIとの違い</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <h4>使い方・活用</h4>
+        <ul>
+          <li><a href="getting-started.html">導入方法を選ぶ</a></li>
+          <li><a href="first-steps.html">はじめての使い方</a></li>
+          <li><a href="use-cases.html">便利な活用事例</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <h4>知識・安全</h4>
+        <ul>
+          <li><a href="pricing.html">料金とトークン</a></li>
+          <li><a href="security.html">セキュリティ</a></li>
+          <li><a href="glossary.html">用語集</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>ClaudeCode入門 — 初心者向けオンボーディングサイト</span>
+      <span>※ 掲載内容は参考情報です。最新の仕様は公式サイトをご確認ください。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

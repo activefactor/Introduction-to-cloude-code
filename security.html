@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>セキュリティ・オプトアウト・サンドボックス — ClaudeCode入門</title>
+  <meta name="description" content="ClaudeCodeを安心して使うためのセキュリティ・オプトアウト・サンドボックスの考え方をやさしく説明します。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .trust-map {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-5);
+      margin: var(--space-6) 0;
+    }
+    .trust-zone {
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      border: 2px solid;
+    }
+    .trust-zone--ok {
+      border-color: var(--color-success);
+      background: #f0fff4;
+    }
+    .trust-zone--careful {
+      border-color: var(--color-warning);
+      background: var(--color-caution-bg);
+    }
+    .trust-zone h4 {
+      font-size: var(--text-base);
+      margin-bottom: var(--space-3);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+    .trust-zone ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+    }
+    .trust-zone li { padding-left: var(--space-4); position: relative; }
+    .trust-zone--ok li::before { content: "◎"; position: absolute; left: 0; color: var(--color-success); }
+    .trust-zone--careful li::before { content: "△"; position: absolute; left: 0; color: var(--color-warning); }
+    @media (max-width: 640px) {
+      .trust-map { grid-template-columns: 1fr; }
+    }
+
+    .optout-box {
+      background: var(--color-primary-light);
+      border: 2px solid var(--color-primary);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+    }
+    .optout-box h3 { font-size: var(--text-xl); margin-bottom: var(--space-4); }
+    .optout-items {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+    .optout-item {
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: var(--space-4) var(--space-5);
+      border: 1px solid var(--color-border);
+    }
+    .optout-item h4 {
+      font-size: var(--text-base);
+      margin-bottom: var(--space-1);
+    }
+    .optout-item p {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      margin: 0;
+    }
+
+    .sandbox-diagram {
+      background: var(--color-primary-light);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      text-align: center;
+      position: relative;
+      margin: var(--space-6) 0;
+    }
+    .sandbox-outer {
+      border: 3px dashed var(--color-primary);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      margin-bottom: var(--space-3);
+    }
+    .sandbox-outer-label {
+      font-size: var(--text-sm);
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: var(--space-4);
+    }
+    .sandbox-inner {
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: var(--space-4) var(--space-6);
+      display: inline-block;
+    }
+    .sandbox-inner p {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      margin: 0;
+    }
+    .sandbox-caption {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+    }
+
+    .basic-stance {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+    }
+    .stance-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      border: 1px solid var(--color-border);
+      text-align: center;
+    }
+    .stance-card .icon { font-size: 1.75rem; margin-bottom: var(--space-2); }
+    .stance-card h4 { font-size: var(--text-base); margin-bottom: var(--space-1); }
+    .stance-card p { font-size: var(--text-sm); color: var(--color-text-muted); margin: 0; }
+    @media (max-width: 640px) {
+      .basic-stance { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-logo">Claude<span>Code</span>入門</a>
+    <nav class="site-nav" aria-label="メインナビゲーション">
+      <a href="experience.html">まず体験</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">知る <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="what-is-claudecode.html">ClaudeCodeとは</a>
+          <a href="vs-chat-ai.html">Chat AIとの違い</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">使いこなす <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="getting-started.html">導入方法を選ぶ</a>
+          <a href="first-steps.html">はじめての使い方</a>
+          <a href="use-cases.html">便利な活用事例</a>
+          <a href="session-memory.html">セッション・記憶・ルール</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">料金・安全 <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="pricing.html">料金とトークン</a>
+          <a href="models.html">モデルの使い分け</a>
+          <a href="security.html">セキュリティ・オプトアウト</a>
+        </div>
+      </div>
+      <a href="faq.html">FAQ</a>
+    </nav>
+    <div class="header-cta">
+      <a href="experience.html" class="btn btn--primary">まず体験してみる</a>
+    </div>
+    <button class="hamburger" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container--narrow">
+    <p class="section-label">安心して使う</p>
+    <h1>セキュリティ・オプトアウト・サンドボックス</h1>
+    <p class="section-lead" style="margin-bottom:0;">
+      ClaudeCodeを安全に使うために知っておきたいことを整理します。<br>
+      怖がりすぎず、でも適切に気をつけられる状態を目指します。
+    </p>
+    <div class="page-summary">
+      <h3>このページで分かること</h3>
+      <ul>
+        <li>セキュリティで気をつけること</li>
+        <li>オプトアウトとは何か</li>
+        <li>サンドボックスの役割</li>
+        <li>AIに任せてよい作業・慎重に見る作業</li>
+        <li>不安なときの基本姿勢</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section section--white">
+  <div class="container--narrow">
+    <div class="callout callout--warning">
+      <strong>このページを読む前に</strong>
+      <p>セキュリティやオプトアウトの具体的な設定や仕様は、変更されることがあります。<br>
+      このページでは「考え方」を説明します。最新の情報は必ず <a href="https://www.anthropic.com" target="_blank" rel="noopener">Anthropic公式サイト</a> でご確認ください。</p>
+    </div>
+    <div class="callout callout--info" style="margin-top:var(--space-4);">
+      <strong>3行まとめ</strong>
+      <p>ClaudeCodeは基本的に安全に設計されていますが、機密情報や本番環境への操作は慎重に扱う必要があります。<br>
+      オプトアウトはデータの学習利用などに関係する設定で、気になる人は確認しておく価値があります。<br>
+      サンドボックスはAIの動作範囲を制限する仕組みで、意図しない操作を防ぐ役割があります。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--light">
+  <div class="container--narrow">
+    <p class="section-label">安全に使う</p>
+    <h2 class="section-title">セキュリティで気をつけること</h2>
+    <p style="margin-bottom:var(--space-6);">ClaudeCodeは便利ですが、いくつかの点に気をつけると安心です。</p>
+
+    <div class="trust-map">
+      <div class="trust-zone trust-zone--ok">
+        <h4>✅ 比較的任せやすい作業</h4>
+        <ul>
+          <li>ドキュメントの作成・整理</li>
+          <li>テスト用・開発用ファイルの操作</li>
+          <li>新しいファイルの作成</li>
+          <li>コードの読み解き・説明</li>
+          <li>ローカル環境での試作</li>
+        </ul>
+      </div>
+      <div class="trust-zone trust-zone--careful">
+        <h4>⚠️ 慎重に確認したい作業</h4>
+        <ul>
+          <li>本番環境・重要なシステムへの操作</li>
+          <li>機密情報を含むファイルの処理</li>
+          <li>削除・上書きを伴う大きな変更</li>
+          <li>外部への送信・公開を伴う操作</li>
+          <li>セキュリティ設定の変更</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout callout--tip">
+      <strong>基本的な心がけ</strong>
+      <p>ClaudeCodeに渡す情報は「公開してもよいもの」だけにするのが安心です。<br>
+      パスワード・APIキー・個人情報などは渡さないようにしましょう。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--white" id="optout">
+  <div class="container--narrow">
+    <p class="section-label">知っておきたい設定</p>
+    <h2 class="section-title">オプトアウトとは</h2>
+    <p>ClaudeCodeを使っていると「オプトアウト」という言葉を目にすることがあります。難しそうですが、考え方はシンプルです。</p>
+
+    <div class="optout-box" style="margin: var(--space-6) 0;">
+      <h3>📌 オプトアウトとは</h3>
+      <p style="font-size:var(--text-lg); font-weight:700; margin-bottom:var(--space-5);">「このデータを特定の目的に使わないでほしい」と伝える設定</p>
+      <div class="optout-items">
+        <div class="optout-item">
+          <h4>何のためにある？</h4>
+          <p>AIモデルの改善（学習）などへのデータ利用を制限したい場合に使います。自分のやり取りや情報がどう使われるかを管理するためのものです。</p>
+        </div>
+        <div class="optout-item">
+          <h4>どんな不安に関係する？</h4>
+          <p>「自分の会話内容がモデルの学習に使われるの？」「機密情報が混ざっていたらどうなる？」といった疑問に関係します。</p>
+        </div>
+        <div class="optout-item">
+          <h4>迷ったときの基本対応</h4>
+          <p>機密性の高い情報を扱う場合は、オプトアウトの設定を確認しておくことをおすすめします。設定方法は公式ドキュメントを参照してください。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout--warning">
+      <strong>オプトアウトに関する注意</strong>
+      <p>オプトアウトの具体的な設定方法や適用範囲は、Anthropicの方針変更により変わることがあります。<br>
+      使用前に最新の <a href="https://www.anthropic.com" target="_blank" rel="noopener">プライバシーポリシー</a> および利用規約を確認してください。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--light">
+  <div class="container--narrow">
+    <p class="section-label">保護の仕組み</p>
+    <h2 class="section-title">サンドボックスとは</h2>
+    <p>「サンドボックス」は、AIの動作範囲を制限するための仕組みです。</p>
+
+    <div class="sandbox-diagram">
+      <div class="sandbox-outer">
+        <p class="sandbox-outer-label">🏖️ サンドボックス（保護された領域）</p>
+        <div class="sandbox-inner">
+          <p>🤖 ClaudeCodeの動作範囲</p>
+          <p style="margin-top:var(--space-2); font-size:var(--text-xs); color:var(--color-text-muted);">許可された操作のみ実行</p>
+        </div>
+      </div>
+      <p class="sandbox-caption">サンドボックスの外（システム全体・ネットワーク等）には<br>原則としてアクセスできない</p>
+    </div>
+
+    <p>砂場（サンドボックス）の中では自由に遊べるが、砂場の外には出られない、というイメージです。</p>
+    <p>ClaudeCodeがどこまで操作できるかを制限することで、<strong>意図しないシステム変更や危険な操作を防ぐ</strong>役割を持ちます。</p>
+
+    <div class="callout callout--info">
+      <strong>サンドボックスは安全の基盤のひとつ</strong>
+      <p>すべてのリスクを防げるわけではありませんが、一定の安全網として機能しています。それでも、大事なファイルや本番環境への操作には慎重に確認することをおすすめします。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--white">
+  <div class="container--narrow">
+    <p class="section-label">まとめ</p>
+    <h2 class="section-title">不安なときの基本姿勢</h2>
+
+    <div class="basic-stance">
+      <div class="stance-card">
+        <div class="icon" aria-hidden="true">🔍</div>
+        <h4>確認してから進む</h4>
+        <p>大きな変更の前に「こういう方向でいい？」と確認してもらう習慣をつけましょう。</p>
+      </div>
+      <div class="stance-card">
+        <div class="icon" aria-hidden="true">🔒</div>
+        <h4>機密情報は渡さない</h4>
+        <p>パスワード・APIキー・個人情報は渡さないのが基本です。</p>
+      </div>
+      <div class="stance-card">
+        <div class="icon" aria-hidden="true">📋</div>
+        <h4>最新情報を確認する</h4>
+        <p>オプトアウトや設定は変わることがあります。定期的に公式サイトを確認しましょう。</p>
+      </div>
+    </div>
+
+    <div class="callout callout--tip" style="margin-top:var(--space-6);">
+      <strong>過度に心配しなくて大丈夫</strong>
+      <p>ClaudeCodeは便利に安全に使えるよう設計されています。ただし、大事な情報の扱いには人間の目で確認するのが最善です。<br>
+      「AIを使うこと自体が危険」ではなく、「何を渡すかに気をつける」ことが大切です。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--light">
+  <div class="container--narrow">
+    <div class="next-page-nav">
+      <h3>次は用語集で理解を深めよう</h3>
+      <div class="next-page-cards">
+        <a href="glossary.html" class="next-page-card">
+          <span class="label">おすすめの次のページ</span>
+          <span class="title">用語集</span>
+          <span class="desc">このページの用語を含め、主要語をまとめています。</span>
+        </a>
+        <a href="faq.html" class="next-page-card">
+          <span class="label">疑問を解消したい</span>
+          <span class="title">FAQ</span>
+          <span class="desc">よくある質問への回答をまとめています。</span>
+        </a>
+        <a href="index.html" class="next-page-card">
+          <span class="label">最初から見直す</span>
+          <span class="title">トップページ</span>
+          <span class="desc">サイト全体の入口に戻ります。</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="site-logo">Claude<span style="color:#7ec8e3;">Code</span>入門</a>
+        <p>ClaudeCode初心者向けオンボーディングサイト。</p>
+      </div>
+      <div class="footer-nav">
+        <h4>体験・基本</h4>
+        <ul>
+          <li><a href="experience.html">まず体験してみる</a></li>
+          <li><a href="what-is-claudecode.html">ClaudeCodeとは</a></li>
+          <li><a href="vs-chat-ai.html">Chat AIとの違い</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <h4>使い方・活用</h4>
+        <ul>
+          <li><a href="getting-started.html">導入方法を選ぶ</a></li>
+          <li><a href="first-steps.html">はじめての使い方</a></li>
+          <li><a href="use-cases.html">便利な活用事例</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <h4>知識・安全</h4>
+        <ul>
+          <li><a href="pricing.html">料金とトークン</a></li>
+          <li><a href="security.html">セキュリティ</a></li>
+          <li><a href="glossary.html">用語集</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>ClaudeCode入門 — 初心者向けオンボーディングサイト</span>
+      <span>※ 掲載内容は参考情報です。最新の仕様は公式サイトをご確認ください。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>料金とトークン — ClaudeCode入門</title>
+  <meta name="description" content="ClaudeCodeの料金体系とトークンの考え方をやさしく解説。上限到達時の対処法や、課金が心配な人向けの考え方も紹介します。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .token-visual {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+      margin: var(--space-6) 0;
+    }
+    .token-block {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      border: 1px solid var(--color-border);
+      text-align: center;
+    }
+    .token-block .icon { font-size: 1.75rem; margin-bottom: var(--space-2); }
+    .token-block h4 { font-size: var(--text-base); margin-bottom: var(--space-1); }
+    .token-block p { font-size: var(--text-sm); color: var(--color-text-muted); margin: 0; }
+    @media (max-width: 640px) {
+      .token-visual { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .limit-flow {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+    .limit-step {
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
+    }
+    .limit-step__num {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-full);
+      background: var(--color-primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: var(--text-sm);
+      flex-shrink: 0;
+    }
+    .limit-step__content h4 {
+      font-size: var(--text-base);
+      margin-bottom: var(--space-1);
+    }
+    .limit-step__content p {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      margin: 0;
+    }
+
+    .worry-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-5);
+    }
+    .worry-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      border: 1px solid var(--color-border);
+    }
+    .worry-card h4 {
+      font-size: var(--text-base);
+      margin-bottom: var(--space-3);
+    }
+    .worry-card p {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      margin: 0;
+    }
+    @media (max-width: 640px) {
+      .worry-cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-logo">Claude<span>Code</span>入門</a>
+    <nav class="site-nav" aria-label="メインナビゲーション">
+      <a href="experience.html">まず体験</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">知る <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="what-is-claudecode.html">ClaudeCodeとは</a>
+          <a href="vs-chat-ai.html">Chat AIとの違い</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">使いこなす <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="getting-started.html">導入方法を選ぶ</a>
+          <a href="first-steps.html">はじめての使い方</a>
+          <a href="use-cases.html">便利な活用事例</a>
+          <a href="session-memory.html">セッション・記憶・ルール</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">料金・安全 <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="pricing.html">料金とトークン</a>
+          <a href="models.html">モデルの使い分け</a>
+          <a href="security.html">セキュリティ・オプトアウト</a>
+        </div>
+      </div>
+      <a href="faq.html">FAQ</a>
+    </nav>
+    <div class="header-cta">
+      <a href="experience.html" class="btn btn--primary">まず体験してみる</a>
+    </div>
+    <button class="hamburger" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container--narrow">
+    <p class="section-label">料金・コストを知る</p>
+    <h1>料金とトークン</h1>
+    <p class="section-lead" style="margin-bottom:0;">
+      課金や上限への不安を減らしましょう。<br>
+      トークンという概念と、料金の考え方をやさしく説明します。
+    </p>
+    <div class="page-summary">
+      <h3>このページで分かること</h3>
+      <ul>
+        <li>料金体系の考え方（具体的な金額は公式サイトで確認を）</li>
+        <li>トークンとは何か</li>
+        <li>上限に達したらどうなるか</li>
+        <li>課金が心配な人向けの考え方</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section section--white">
+  <div class="container--narrow">
+    <div class="callout callout--warning">
+      <strong>はじめに：料金・制限は変わることがあります</strong>
+      <p>このページでは「料金の考え方」を説明します。具体的な金額や制限値は変動することがあるため、最新情報は必ず <a href="https://www.anthropic.com" target="_blank" rel="noopener">Anthropic公式サイト</a> や Claude.ai でご確認ください。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--light">
+  <div class="container--narrow">
+    <p class="section-label">まず知る</p>
+    <h2 class="section-title">料金はどこを見ればいい？</h2>
+    <p>ClaudeCodeの料金は、利用するプランや方法によって異なります。大きく分けると2つの考え方があります。</p>
+
+    <div class="card-grid card-grid--2" style="margin: var(--space-6) 0;">
+      <div class="card">
+        <p style="font-size:1.5rem; margin-bottom:var(--space-3);" aria-hidden="true">📱</p>
+        <h4>Claudeのサブスクリプションに含まれる場合</h4>
+        <p class="text-muted text-sm">月額プランの中でClaudeCodeが利用できる形態。利用量に応じた上限があります。</p>
+      </div>
+      <div class="card">
+        <p style="font-size:1.5rem; margin-bottom:var(--space-3);" aria-hidden="true">🔌</p>
+        <h4>APIとして利用する場合</h4>
+        <p class="text-muted text-sm">トークン量に応じた従量課金。開発者向けで、使った分だけ費用が発生します。</p>
+      </div>
+    </div>
+
+    <div class="callout callout--info">
+      <strong>初心者のほとんどはサブスクリプション経由</strong>
+      <p>まず試してみたい人は、Claude.aiのプランにClaudeCodeが含まれる形で使うのが一般的です。最新のプラン内容は公式サイトを確認してください。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--white">
+  <div class="container--narrow">
+    <p class="section-label">基本概念</p>
+    <h2 class="section-title">トークンって何？</h2>
+    <p>ClaudeCodeを使っていると「トークン」という言葉が出てきます。難しく考えなくて大丈夫です。</p>
+
+    <div class="card" style="margin: var(--space-5) 0; background: var(--color-primary-light); border-color: var(--color-primary);">
+      <p style="font-size:var(--text-lg); font-weight:700; margin-bottom:var(--space-2);">📦 トークン = AIが扱う「情報のかけら」</p>
+      <p class="text-muted">日本語で「1文字〜数文字」に相当するイメージです。送るテキストや受け取る回答、参照するファイルがすべてトークンとしてカウントされます。</p>
+    </div>
+
+    <div class="token-visual">
+      <div class="token-block">
+        <div class="icon" aria-hidden="true">💬</div>
+        <h4>あなたの依頼文</h4>
+        <p>送る文章の長さ分</p>
+      </div>
+      <div class="token-block">
+        <div class="icon" aria-hidden="true">📄</div>
+        <h4>参照するファイル</h4>
+        <p>ファイルの内容分</p>
+      </div>
+      <div class="token-block">
+        <div class="icon" aria-hidden="true">🤖</div>
+        <h4>AIの回答</h4>
+        <p>返ってくる文章分</p>
+      </div>
+      <div class="token-block">
+        <div class="icon" aria-hidden="true">🔄</div>
+        <h4>会話の履歴</h4>
+        <p>これまでのやり取り分</p>
+      </div>
+    </div>
+
+    <p>つまり、長いファイルを渡したり、長い会話を続けたりするほどトークンをたくさん使います。</p>
+    <div class="callout callout--tip">
+      <strong>「トークン = AIへの負担量」と捉えると分かりやすい</strong>
+      <p>少ない情報でシンプルな依頼をするほどトークン消費は少なく、長いファイルや複雑な作業ほど多くなります。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--light">
+  <div class="container--narrow">
+    <p class="section-label">上限に達したら</p>
+    <h2 class="section-title">たくさん使うとどうなる？</h2>
+    <p>一定量以上使うと、利用に制限がかかることがあります。</p>
+
+    <div class="limit-flow" style="margin: var(--space-6) 0;">
+      <div class="limit-step">
+        <div class="limit-step__num">1</div>
+        <div class="limit-step__content">
+          <h4>上限に近づく</h4>
+          <p>使用量が多くなると、メッセージや画面上で通知されることがあります。</p>
+        </div>
+      </div>
+      <div class="limit-step">
+        <div class="limit-step__num">2</div>
+        <div class="limit-step__content">
+          <h4>上限到達で一時停止</h4>
+          <p>設定された上限に達すると、しばらく使えなくなります。操作が完全に失われるわけではありません。</p>
+        </div>
+      </div>
+      <div class="limit-step">
+        <div class="limit-step__num">3</div>
+        <div class="limit-step__content">
+          <h4>一定時間後に回復</h4>
+          <p>一定の待ち時間が経過すると、また使えるようになります。具体的な時間は設定やプランによります。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout--warning">
+      <strong>上限の扱いに関する注意</strong>
+      <p>上限値や回復時間の仕様は変更されることがあります。「だいたいこういう仕組みがある」と覚えておき、詳細は最新の公式情報で確認することをおすすめします。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--white">
+  <div class="container--narrow">
+    <p class="section-label">課金が心配な人へ</p>
+    <h2 class="section-title">課金が心配な人の考え方</h2>
+
+    <div class="worry-cards">
+      <div class="worry-card">
+        <h4>💡 使いすぎを防ぐには？</h4>
+        <p>大きなファイルをたくさん渡すより、必要な部分だけに絞って渡す方がトークン消費が少なくなります。依頼を小さく分けるのも効果的です。</p>
+      </div>
+      <div class="worry-card">
+        <h4>🧮 どれくらいかかるか予測できる？</h4>
+        <p>サブスクリプションの場合、「月あたりの上限内」で収まるような使い方をするのが基本です。APIの場合は利用量が分かるダッシュボードで確認できます。</p>
+      </div>
+      <div class="worry-card">
+        <h4>🔒 上限を超えると追加請求される？</h4>
+        <p>サブスクリプション内での利用なら、上限到達は「一時停止」であり、自動的に追加課金されるわけではありません（プランによります。必ず確認を）。</p>
+      </div>
+      <div class="worry-card">
+        <h4>📊 まず少額から試せる？</h4>
+        <p>多くのプランで小さく試せる入口があります。いきなり大量に使う必要はなく、まず試してみることを優先しましょう。</p>
+      </div>
+    </div>
+
+    <div class="callout callout--info" style="margin-top:var(--space-6);">
+      <strong>料金が不安な人へのアドバイス</strong>
+      <p>最初は「小さな作業を少しずつ試す」ところから始めるのが一番安心です。使い方に慣れてから、大きな作業に活用するのがおすすめです。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--light">
+  <div class="container--narrow">
+    <div class="next-page-nav">
+      <h3>次はモデルの使い分けへ</h3>
+      <div class="next-page-cards">
+        <a href="models.html" class="next-page-card">
+          <span class="label">おすすめの次のページ</span>
+          <span class="title">モデルの使い分け</span>
+          <span class="desc">Opus・Sonnet・Haikuの選び方を案内します。</span>
+        </a>
+        <a href="security.html" class="next-page-card">
+          <span class="label">安全性も知りたい</span>
+          <span class="title">セキュリティ・オプトアウト</span>
+          <span class="desc">安全に使うための考え方を説明します。</span>
+        </a>
+        <a href="faq.html" class="next-page-card">
+          <span class="label">よくある質問</span>
+          <span class="title">FAQ</span>
+          <span class="desc">料金についてのよくある疑問を解消します。</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="site-logo">Claude<span style="color:#7ec8e3;">Code</span>入門</a>
+        <p>ClaudeCode初心者向けオンボーディングサイト。</p>
+      </div>
+      <div class="footer-nav">
+        <h4>体験・基本</h4>
+        <ul>
+          <li><a href="experience.html">まず体験してみる</a></li>
+          <li><a href="what-is-claudecode.html">ClaudeCodeとは</a></li>
+          <li><a href="vs-chat-ai.html">Chat AIとの違い</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <h4>使い方・活用</h4>
+        <ul>
+          <li><a href="getting-started.html">導入方法を選ぶ</a></li>
+          <li><a href="first-steps.html">はじめての使い方</a></li>
+          <li><a href="use-cases.html">便利な活用事例</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <h4>知識・安全</h4>
+        <ul>
+          <li><a href="pricing.html">料金とトークン</a></li>
+          <li><a href="security.html">セキュリティ</a></li>
+          <li><a href="glossary.html">用語集</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>ClaudeCode入門 — 初心者向けオンボーディングサイト</span>
+      <span>※ 掲載内容は参考情報です。最新の仕様は公式サイトをご確認ください。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

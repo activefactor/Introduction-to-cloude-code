@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>モデルの使い分け — ClaudeCode入門</title>
+  <meta name="description" content="ClaudeのモデルOpus・Sonnet・Haikuの選び方をやさしく解説。速さ重視・精度重視・重い作業向けの使い分けガイドです。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .model-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-5);
+      margin: var(--space-6) 0;
+    }
+    .model-card-full {
+      background: #fff;
+      border-radius: var(--radius-xl);
+      border: 2px solid var(--color-border);
+      overflow: hidden;
+      transition: all var(--transition-base);
+    }
+    .model-card-full:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--color-primary);
+    }
+    .model-card-full.featured {
+      border-color: var(--color-accent);
+    }
+    .model-card-full__header {
+      padding: var(--space-5) var(--space-6);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .model-card-full.featured .model-card-full__header {
+      background: var(--color-accent-light);
+    }
+    .model-card-full:not(.featured) .model-card-full__header {
+      background: var(--color-primary-light);
+    }
+    .model-card-full__name {
+      font-size: var(--text-2xl);
+      font-weight: 800;
+      margin-bottom: var(--space-1);
+    }
+    .model-card-full__tagline {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+    }
+    .model-card-full__body {
+      padding: var(--space-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-5);
+    }
+    .model-attr {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+    .model-attr__label {
+      font-size: var(--text-xs);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-text-muted);
+    }
+    .model-attr__value {
+      font-size: var(--text-sm);
+      color: var(--color-text);
+    }
+    .model-usecases-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+    .model-usecases-list li {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      padding-left: var(--space-4);
+      position: relative;
+    }
+    .model-usecases-list li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--color-primary);
+    }
+    @media (max-width: 768px) {
+      .model-cards { grid-template-columns: 1fr; }
+    }
+
+    .choice-guide {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+    .choice-row {
+      display: grid;
+      grid-template-columns: 1fr auto 200px;
+      gap: var(--space-5);
+      align-items: center;
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: var(--space-5) var(--space-6);
+      border: 1px solid var(--color-border);
+    }
+    .choice-row__scene {
+      font-size: var(--text-sm);
+      font-weight: 700;
+    }
+    .choice-row__scene p {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      font-weight: 400;
+      margin-top: var(--space-1);
+      margin-bottom: 0;
+    }
+    .choice-row__arrow {
+      color: var(--color-text-light);
+      font-size: 1.25rem;
+    }
+    .choice-row__model {
+      text-align: center;
+      padding: var(--space-2) var(--space-4);
+      border-radius: var(--radius-full);
+      font-weight: 800;
+      font-size: var(--text-sm);
+    }
+    .choice-row__model--opus { background: var(--color-primary-light); color: var(--color-primary); }
+    .choice-row__model--sonnet { background: var(--color-accent-light); color: var(--color-accent-dark); }
+    .choice-row__model--haiku { background: #f0fff4; color: var(--color-success); }
+    @media (max-width: 640px) {
+      .choice-row {
+        grid-template-columns: 1fr;
+        gap: var(--space-2);
+      }
+      .choice-row__arrow { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-logo">Claude<span>Code</span>入門</a>
+    <nav class="site-nav" aria-label="メインナビゲーション">
+      <a href="experience.html">まず体験</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">知る <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="what-is-claudecode.html">ClaudeCodeとは</a>
+          <a href="vs-chat-ai.html">Chat AIとの違い</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">使いこなす <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="getting-started.html">導入方法を選ぶ</a>
+          <a href="first-steps.html">はじめての使い方</a>
+          <a href="use-cases.html">便利な活用事例</a>
+          <a href="session-memory.html">セッション・記憶・ルール</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">料金・安全 <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="pricing.html">料金とトークン</a>
+          <a href="models.html">モデルの使い分け</a>
+          <a href="security.html">セキュリティ・オプトアウト</a>
+        </div>
+      </div>
+      <a href="faq.html">FAQ</a>
+    </nav>
+    <div class="header-cta">
+      <a href="experience.html" class="btn btn--primary">まず体験してみる</a>
+    </div>
+    <button class="hamburger" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container--narrow">
+    <p class="section-label">モデルを選ぶ</p>
+    <h1>モデルの使い分け</h1>
+    <p class="section-lead" style="margin-bottom:0;">
+      ClaudeCodeで使えるモデルは複数あります。<br>
+      初心者がモデル選択で迷わないよう、作業内容別の選び方を紹介します。
+    </p>
+    <div class="page-summary">
+      <h3>このページで分かること</h3>
+      <ul>
+        <li>OpusとSonnetとHaikuの違いとは</li>
+        <li>速さ重視・精度重視・重い作業向けの選び方</li>
+        <li>初心者のためのおすすめモデル</li>
+        <li>作業内容別おすすめ一覧</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section section--white">
+  <div class="container--narrow">
+    <div class="callout callout--warning">
+      <strong>モデル名・仕様は変わることがあります</strong>
+      <p>Claudeのモデルは継続的に更新されます。このページは「考え方」を説明するためのものです。最新のモデル情報は <a href="https://www.anthropic.com" target="_blank" rel="noopener">Anthropic公式サイト</a> でご確認ください。</p>
+    </div>
+    <div class="callout callout--info" style="margin-top:var(--space-4);">
+      <strong>3行まとめ</strong>
+      <p>Claudeには「重い作業向け（Opus）」「バランス型（Sonnet）」「高速軽量（Haiku）」の系統があります。<br>
+      初心者にはSonnetが最もバランスよく使いやすいです。<br>
+      迷ったらSonnetを選べば、ほとんどの場面で十分対応できます。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--light">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">モデルを知る</p>
+      <h2 class="section-title">3種類のモデルの違い</h2>
+      <p class="section-lead">Claudeには大きく3つの系統があります。それぞれの特徴を見てみましょう。</p>
+    </div>
+    <div class="model-cards">
+      <div class="model-card-full">
+        <div class="model-card-full__header">
+          <div class="model-card-full__name">Opus</div>
+          <div class="model-card-full__tagline">重い作業・高精度向け</div>
+        </div>
+        <div class="model-card-full__body">
+          <div class="model-attr">
+            <span class="model-attr__label">特徴</span>
+            <span class="model-attr__value">最も高い精度と推論能力。複雑な問題にも対応できる。</span>
+          </div>
+          <div class="model-attr">
+            <span class="model-attr__label">トークン消費</span>
+            <span class="model-attr__value">多め（慎重に使うとよい）</span>
+          </div>
+          <div class="model-attr">
+            <span class="model-attr__label">向いている場面</span>
+            <ul class="model-usecases-list">
+              <li>複雑なコードの設計・レビュー</li>
+              <li>難しい論理的推論が必要な作業</li>
+              <li>精度を最優先したいとき</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="model-card-full featured">
+        <div class="model-card-full__header">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div>
+              <div class="model-card-full__name">Sonnet</div>
+              <div class="model-card-full__tagline">バランス型・初心者おすすめ</div>
+            </div>
+            <span class="badge badge--accent">おすすめ</span>
+          </div>
+        </div>
+        <div class="model-card-full__body">
+          <div class="model-attr">
+            <span class="model-attr__label">特徴</span>
+            <span class="model-attr__value">精度と速さのバランスが取れた主力モデル。多くの場面で最適。</span>
+          </div>
+          <div class="model-attr">
+            <span class="model-attr__label">トークン消費</span>
+            <span class="model-attr__value">中程度（使いやすいバランス）</span>
+          </div>
+          <div class="model-attr">
+            <span class="model-attr__label">向いている場面</span>
+            <ul class="model-usecases-list">
+              <li>日常的な文書作成・編集</li>
+              <li>コードの作成・修正</li>
+              <li>ほとんどの一般的な作業</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="model-card-full">
+        <div class="model-card-full__header">
+          <div class="model-card-full__name">Haiku</div>
+          <div class="model-card-full__tagline">高速・軽量向け</div>
+        </div>
+        <div class="model-card-full__body">
+          <div class="model-attr">
+            <span class="model-attr__label">特徴</span>
+            <span class="model-attr__value">最も速く、トークン消費が少ない。シンプルな作業に最適。</span>
+          </div>
+          <div class="model-attr">
+            <span class="model-attr__label">トークン消費</span>
+            <span class="model-attr__value">少なめ（コスト抑えたいとき）</span>
+          </div>
+          <div class="model-attr">
+            <span class="model-attr__label">向いている場面</span>
+            <ul class="model-usecases-list">
+              <li>シンプルな要約・整理</li>
+              <li>素早い回答が欲しいとき</li>
+              <li>コストを抑えながら大量に処理するとき</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--white">
+  <div class="container--narrow">
+    <p class="section-label">場面別ガイド</p>
+    <h2 class="section-title">作業内容別おすすめ一覧</h2>
+    <p style="margin-bottom:var(--space-6);">どの作業にどのモデルが向いているか、一覧で確認できます。</p>
+
+    <div class="choice-guide">
+      <div class="choice-row">
+        <div class="choice-row__scene">
+          READMEや文書を作りたい
+          <p>日常的な文書作成</p>
+        </div>
+        <div class="choice-row__arrow" aria-hidden="true">→</div>
+        <div class="choice-row__model choice-row__model--sonnet">Sonnet</div>
+      </div>
+      <div class="choice-row">
+        <div class="choice-row__scene">
+          ちょっとした整理や要約がしたい
+          <p>シンプルな軽い作業</p>
+        </div>
+        <div class="choice-row__arrow" aria-hidden="true">→</div>
+        <div class="choice-row__model choice-row__model--haiku">Haiku</div>
+      </div>
+      <div class="choice-row">
+        <div class="choice-row__scene">
+          コードのレビューや複雑な設計をしたい
+          <p>高精度が必要な作業</p>
+        </div>
+        <div class="choice-row__arrow" aria-hidden="true">→</div>
+        <div class="choice-row__model choice-row__model--opus">Opus</div>
+      </div>
+      <div class="choice-row">
+        <div class="choice-row__scene">
+          スクリプトを書いてもらいたい
+          <p>中程度の複雑さ</p>
+        </div>
+        <div class="choice-row__arrow" aria-hidden="true">→</div>
+        <div class="choice-row__model choice-row__model--sonnet">Sonnet</div>
+      </div>
+      <div class="choice-row">
+        <div class="choice-row__scene">
+          とにかく迷いたくない
+          <p>初心者・何でもよい</p>
+        </div>
+        <div class="choice-row__arrow" aria-hidden="true">→</div>
+        <div class="choice-row__model choice-row__model--sonnet">Sonnet</div>
+      </div>
+    </div>
+
+    <div class="callout callout--tip" style="margin-top:var(--space-6);">
+      <strong>迷ったらSonnetを選べばOK</strong>
+      <p>多くの場面でSonnetが最適なバランスを持っています。使い込んできたときに、必要に応じて他のモデルを試してみましょう。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--light">
+  <div class="container--narrow">
+    <div class="next-page-nav">
+      <h3>次はセッション・記憶・ルールを知ろう</h3>
+      <div class="next-page-cards">
+        <a href="session-memory.html" class="next-page-card">
+          <span class="label">おすすめの次のページ</span>
+          <span class="title">セッション・記憶・ルール・スキル</span>
+          <span class="desc">継続的に使いこなすための仕組みを学びます。</span>
+        </a>
+        <a href="security.html" class="next-page-card">
+          <span class="label">安全性も気になる</span>
+          <span class="title">セキュリティ・オプトアウト</span>
+          <span class="desc">安心して使うための考え方を説明します。</span>
+        </a>
+        <a href="faq.html" class="next-page-card">
+          <span class="label">疑問を解消したい</span>
+          <span class="title">FAQ</span>
+          <span class="desc">よくある質問への回答をまとめています。</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="site-logo">Claude<span style="color:#7ec8e3;">Code</span>入門</a>
+        <p>ClaudeCode初心者向けオンボーディングサイト。</p>
+      </div>
+      <div class="footer-nav">
+        <h4>体験・基本</h4>
+        <ul>
+          <li><a href="experience.html">まず体験してみる</a></li>
+          <li><a href="what-is-claudecode.html">ClaudeCodeとは</a></li>
+          <li><a href="vs-chat-ai.html">Chat AIとの違い</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <h4>使い方・活用</h4>
+        <ul>
+          <li><a href="getting-started.html">導入方法を選ぶ</a></li>
+          <li><a href="first-steps.html">はじめての使い方</a></li>
+          <li><a href="use-cases.html">便利な活用事例</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <h4>知識・安全</h4>
+        <ul>
+          <li><a href="pricing.html">料金とトークン</a></li>
+          <li><a href="security.html">セキュリティ</a></li>
+          <li><a href="glossary.html">用語集</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>ClaudeCode入門 — 初心者向けオンボーディングサイト</span>
+      <span>※ 掲載内容は参考情報です。最新の仕様は公式サイトをご確認ください。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

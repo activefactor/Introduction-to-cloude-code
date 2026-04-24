@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>便利な活用事例 — ClaudeCode入門</title>
+  <meta name="description" content="ClaudeCodeの便利な活用事例を紹介。従来のやり方と比較しながら、どんな場面で役立つかを具体的に説明します。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="site-logo">Claude<span>Code</span>入門</a>
+    <nav class="site-nav" aria-label="メインナビゲーション">
+      <a href="experience.html">まず体験</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">知る <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="what-is-claudecode.html">ClaudeCodeとは</a>
+          <a href="vs-chat-ai.html">Chat AIとの違い</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">使いこなす <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="getting-started.html">導入方法を選ぶ</a>
+          <a href="first-steps.html">はじめての使い方</a>
+          <a href="use-cases.html">便利な活用事例</a>
+          <a href="session-memory.html">セッション・記憶・ルール</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown__trigger" aria-haspopup="true" aria-expanded="false">料金・安全 <span class="arrow" aria-hidden="true">▾</span></button>
+        <div class="nav-dropdown__menu">
+          <a href="pricing.html">料金とトークン</a>
+          <a href="models.html">モデルの使い分け</a>
+          <a href="security.html">セキュリティ・オプトアウト</a>
+        </div>
+      </div>
+      <a href="faq.html">FAQ</a>
+    </nav>
+    <div class="header-cta">
+      <a href="experience.html" class="btn btn--primary">まず体験してみる</a>
+    </div>
+    <button class="hamburger" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container--narrow">
+    <p class="section-label">活用を広げる</p>
+    <h1>便利な活用事例</h1>
+    <p class="section-lead" style="margin-bottom:0;">
+      「なぜ便利なのか」を実例で理解しましょう。<br>
+      従来のやり方との比較で、ClaudeCodeの価値が分かります。
+    </p>
+    <div class="page-summary">
+      <h3>このページで分かること</h3>
+      <ul>
+        <li>ClaudeCodeが役立つ具体的な場面</li>
+        <li>従来のやり方と何が変わるか</li>
+        <li>技術者でなくてもイメージしやすい事例</li>
+        <li>どんな作業から始めるとよいか</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section section--white">
+  <div class="container--narrow">
+    <div class="callout callout--info">
+      <strong>3行まとめ</strong>
+      <p>ClaudeCodeが便利な場面は「ファイルを作る・直す・読む」すべての作業です。<br>
+      特に「Chat AIで回答をもらったあと、自分で作業に落とす」手間が大きく減ります。<br>
+      コーディング経験がなくても使いやすい場面がたくさんあります。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 事例1 -->
+<section class="section section--light">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">事例 01</p>
+      <h2 class="section-title">ファイルを読みながら要約や改善提案をしてもらう</h2>
+    </div>
+    <div class="usecase-card">
+      <div class="usecase-card__header">
+        <div class="icon" aria-hidden="true">🔍</div>
+        <div>
+          <h3>既存ファイルを読んで理解・改善する</h3>
+          <span class="badge badge--primary">文書・コード問わず使える</span>
+        </div>
+      </div>
+      <div class="usecase-card__body">
+        <p>手元のファイルをClaudeCodeに渡して「要約して」「改善点を教えて」「読みやすく直して」と頼むだけで、内容を理解したうえで提案・修正まで進めてくれます。</p>
+        <div class="before-after" style="margin: var(--space-6) 0;">
+          <div class="before-after__item before-after__item--before">
+            <div class="before-after__header">従来のやり方</div>
+            <div class="before-after__body">
+              <ol>
+                <li>ファイルを開く</li>
+                <li>内容をコピー</li>
+                <li>Chat AIに貼り付けて相談</li>
+                <li>回答をコピー</li>
+                <li>元ファイルに手動で反映</li>
+              </ol>
+            </div>
+          </div>
+          <div class="before-after__item before-after__item--after">
+            <div class="before-after__header">ClaudeCodeで</div>
+            <div class="before-after__body">
+              <ol>
+                <li>「このファイルを読んで整えて」と一言</li>
+                <li>ClaudeCodeがファイルを読む</li>
+                <li>改善案を提示・そのまま修正</li>
+                <li>確認して完了</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="code-block">notes.txtを読んで、読みやすい文章に整えてください</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 事例2 -->
+<section class="section section--white">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">事例 02</p>
+      <h2 class="section-title">小さなスクリプトを作ってもらう</h2>
+    </div>
+    <div class="usecase-card">
+      <div class="usecase-card__header">
+        <div class="icon" aria-hidden="true">⚙️</div>
+        <div>
+          <h3>繰り返し作業を自動化する</h3>
+          <span class="badge badge--accent">コーディング経験不問</span>
+        </div>
+      </div>
+      <div class="usecase-card__body">
+        <p>「毎回この操作が面倒」と思っている作業を自動化するスクリプトを、会話の中で作ってもらえます。コードが分からなくても、「こういうことをしたい」と説明するだけで大丈夫です。</p>
+        <div class="before-after" style="margin: var(--space-6) 0;">
+          <div class="before-after__item before-after__item--before">
+            <div class="before-after__header">従来のやり方</div>
+            <div class="before-after__body">
+              <ol>
+                <li>Chat AIにコードを相談</li>
+                <li>コードをコピー</li>
+                <li>新しいファイルを作る</li>
+                <li>貼り付けて保存</li>
+                <li>動かして確認</li>
+              </ol>
+            </div>
+          </div>
+          <div class="before-after__item before-after__item--after">
+            <div class="before-after__header">ClaudeCodeで</div>
+            <div class="before-after__body">
+              <ol>
+                <li>やりたいことを説明</li>
+                <li>ClaudeCodeがスクリプトを作成</li>
+                <li>その場で動作確認</li>
+                <li>必要なら修正</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="code-block">このフォルダ内の.txtファイルを日付順に並べた一覧をCSVで出力するスクリプトを作って</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 事例3 -->
+<section class="section section--light">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">事例 03</p>
+      <h2 class="section-title">READMEや資料のたたき台を作る</h2>
+    </div>
+    <div class="usecase-card">
+      <div class="usecase-card__header">
+        <div class="icon" aria-hidden="true">📝</div>
+        <div>
+          <h3>文書のたたき台を一気に作る</h3>
+          <span class="badge badge--success">最初の体験に最適</span>
+        </div>
+      </div>
+      <div class="usecase-card__body">
+        <p>プロジェクトの概要や目的を伝えると、構成のある文書をファイルとして作ってくれます。「何から書けばいいか分からない」という状態からでも始められます。</p>
+        <div class="before-after" style="margin: var(--space-6) 0;">
+          <div class="before-after__item before-after__item--before">
+            <div class="before-after__header">従来のやり方</div>
+            <div class="before-after__body">
+              <ol>
+                <li>Chat AIに内容を伝えて文章案をもらう</li>
+                <li>コピーして自分でファイルを作る</li>
+                <li>構成を整える</li>
+                <li>追記・修正を繰り返す</li>
+              </ol>
+            </div>
+          </div>
+          <div class="before-after__item before-after__item--after">
+            <div class="before-after__header">ClaudeCodeで</div>
+            <div class="before-after__body">
+              <ol>
+                <li>プロジェクトの概要を説明</li>
+                <li>ClaudeCodeがREADME.mdを作成</li>
+                <li>確認して追記・修正を依頼</li>
+                <li>完成</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="code-block">このフォルダのプロジェクトを見て、分かりやすいREADME.mdを作って。対象読者は初心者です。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 事例4 -->
+<section class="section section--white">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">事例 04</p>
+      <h2 class="section-title">既存コードを理解する</h2>
+    </div>
+    <div class="usecase-card">
+      <div class="usecase-card__header">
+        <div class="icon" aria-hidden="true">🧩</div>
+        <div>
+          <h3>コードを読んでもらって説明してもらう</h3>
+          <span class="badge badge--primary">コードが読めなくてもOK</span>
+        </div>
+      </div>
+      <div class="usecase-card__body">
+        <p>「このコードが何をしているか分からない」「どこを修正すればいいか分からない」という状況でも、ClaudeCodeにファイルを渡して「説明して」と頼むだけで、わかりやすく解説してもらえます。</p>
+        <div class="callout callout--info" style="margin: var(--space-5) 0;">
+          <strong>こんな使い方もあります</strong>
+          <p>自分で書いたコードの見直し、引き継いだコードの把握、ライブラリの使い方理解など、「理解する」ためのツールとしても活躍します。</p>
+        </div>
+        <div class="code-block">app.jsを読んで、このコードが何をしているか初心者でも分かるように説明して</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- まとめ -->
+<section class="section section--light">
+  <div class="container--narrow">
+    <p class="section-label">まとめ</p>
+    <h2 class="section-title">従来と比べると何がラクになる？</h2>
+
+    <div style="overflow-x:auto;">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>作業</th>
+            <th>従来</th>
+            <th class="col-claude">ClaudeCodeで</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>文書・READMEを作る</td>
+            <td>案をもらって自分でファイルに書く</td>
+            <td>ファイルとして直接作ってもらえる</td>
+          </tr>
+          <tr>
+            <td>ファイルを整理・改善する</td>
+            <td>内容をコピーして相談→手動で反映</td>
+            <td>ファイルを読んでそのまま修正</td>
+          </tr>
+          <tr>
+            <td>スクリプトを作る</td>
+            <td>コードをコピーして自分でファイル化</td>
+            <td>説明するだけで動くファイルが完成</td>
+          </tr>
+          <tr>
+            <td>コードを理解する</td>
+            <td>コードをコピーして貼り付けて相談</td>
+            <td>「このファイルを説明して」で完結</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout--tip" style="margin-top:var(--space-6);">
+      <strong>共通するのは「コピペが減る」こと</strong>
+      <p>従来はChat AIで「答えをもらう」→「自分でファイルに落とす」という2ステップが必要でした。ClaudeCodeはこの間をなくすことで、作業がひと続きになります。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--white">
+  <div class="container--narrow">
+    <div class="next-page-nav">
+      <h3>次は料金・しくみを知ろう</h3>
+      <div class="next-page-cards">
+        <a href="pricing.html" class="next-page-card">
+          <span class="label">おすすめの次のページ</span>
+          <span class="title">料金とトークン</span>
+          <span class="desc">使う前に料金の考え方を理解しておきましょう。</span>
+        </a>
+        <a href="session-memory.html" class="next-page-card">
+          <span class="label">さらに使いこなす</span>
+          <span class="title">セッション・記憶・ルール</span>
+          <span class="desc">継続利用で便利になる考え方を学びます。</span>
+        </a>
+        <a href="first-steps.html" class="next-page-card">
+          <span class="label">まだ始めていない</span>
+          <span class="title">はじめての使い方</span>
+          <span class="desc">最初の一歩をステップで案内します。</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="site-logo">Claude<span style="color:#7ec8e3;">Code</span>入門</a>
+        <p>ClaudeCode初心者向けオンボーディングサイト。</p>
+      </div>
+      <div class="footer-nav">
+        <h4>体験・基本</h4>
+        <ul>
+          <li><a href="experience.html">まず体験してみる</a></li>
+          <li><a href="what-is-claudecode.html">ClaudeCodeとは</a></li>
+          <li><a href="vs-chat-ai.html">Chat AIとの違い</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <h4>使い方・活用</h4>
+        <ul>
+          <li><a href="getting-started.html">導入方法を選ぶ</a></li>
+          <li><a href="first-steps.html">はじめての使い方</a></li>
+          <li><a href="use-cases.html">便利な活用事例</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <h4>知識・安全</h4>
+        <ul>
+          <li><a href="pricing.html">料金とトークン</a></li>
+          <li><a href="security.html">セキュリティ</a></li>
+          <li><a href="glossary.html">用語集</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>ClaudeCode入門 — 初心者向けオンボーディングサイト</span>
+      <span>※ 掲載内容は参考情報です。最新の仕様は公式サイトをご確認ください。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
